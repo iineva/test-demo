@@ -20,6 +20,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # copy files to the 'dist' folder
+      - run: mkdir -p dist
       - run: cp -rf star-companion dist/star-companion
 
       - uses: actions/upload-pages-artifact@v3
