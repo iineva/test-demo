@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>星伴 - AI儿童习惯养成助手</title>
+    <meta name="description" content="让每个孩子都有一个专属的AI伙伴，陪伴成长，养成好习惯">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles-pages.css">
+</head>
+
+<body>
+    <!-- 启动页 -->
+    <div id="splash-screen" class="screen active">
+        <div class="splash-content">
+            <div class="splash-logo">
+                <div class="star-burst">
+                    <span class="star s1">⭐</span>
+                    <span class="star s2">✨</span>
+                    <span class="star s3">🌟</span>
+                    <span class="star s4">⭐</span>
+                </div>
+                <div class="logo-icon">🐱</div>
+            </div>
+            <h1 class="splash-title">星伴</h1>
+            <p class="splash-subtitle">你的专属成长伙伴</p>
+            <div class="loading-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引导页 - 身份选择 -->
+    <div id="onboard-identity" class="screen">
+        <div class="onboard-container">
+            <div class="onboard-progress">
+                <div class="progress-dot active"></div>
+                <div class="progress-dot"></div>
+                <div class="progress-dot"></div>
+                <div class="progress-dot"></div>
+            </div>
+            <div class="onboard-illustration">
+                <div class="floating-elements">
+                    <span class="float-item f1">🎈</span>
+                    <span class="float-item f2">🌈</span>
+                    <span class="float-item f3">⭐</span>
+                </div>
+                <div class="onboard-mascot">👋</div>
+            </div>
+            <h2 class="onboard-title">欢迎来到星伴世界！</h2>
+            <p class="onboard-desc">请告诉我，你是...</p>
+            <div class="identity-options">
+                <button class="identity-btn child-btn" onclick="selectIdentity('child')">
+                    <span class="identity-icon">👦</span>
+                    <span class="identity-text">我是小朋友</span>
+                    <span class="identity-hint">开始冒险之旅</span>
+                </button>
+                <button class="identity-btn parent-btn" onclick="selectIdentity('parent')">
+                    <span class="identity-icon">👨‍👩‍👧</span>
+                    <span class="identity-text">我是家长</span>
+                    <span class="identity-hint">管理孩子成长</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引导页 - 输入昵称 -->
+    <div id="onboard-name" class="screen">
+        <div class="onboard-container">
+            <div class="onboard-progress">
+                <div class="progress-dot completed"></div>
+                <div class="progress-dot active"></div>
+                <div class="progress-dot"></div>
+                <div class="progress-dot"></div>
+            </div>
+            <div class="onboard-illustration">
+                <div class="onboard-mascot bounce">🤗</div>
+            </div>
+            <h2 class="onboard-title">你叫什么名字呀？</h2>
+            <p class="onboard-desc">告诉我你的昵称，让我记住你！</p>
+            <div class="name-input-wrapper">
+                <input type="text" id="nickname-input" class="name-input" placeholder="输入你的昵称" maxlength="8">
+                <span class="input-emoji">✏️</span>
+            </div>
+            <button class="primary-btn" onclick="submitName()">
+                <span>下一步</span>
+                <span class="btn-arrow">→</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- 引导页 - 选择性别 -->
+    <div id="onboard-gender" class="screen">
+        <div class="onboard-container">
+            <div class="onboard-progress">
+                <div class="progress-dot completed"></div>
+                <div class="progress-dot completed"></div>
+                <div class="progress-dot active"></div>
+                <div class="progress-dot"></div>
+            </div>
+            <div class="onboard-illustration">
+                <div class="onboard-mascot wiggle">🎭</div>
+            </div>
+            <h2 class="onboard-title">选择你的风格</h2>
+            <p class="onboard-desc">我会为你匹配最合适的伙伴！</p>
+            <div class="gender-options">
+                <button class="gender-btn boy" onclick="selectGender('boy')">
+                    <div class="gender-avatar"><img src="assets/partner_kuqi.png" alt="酷奇"></div>
+                    <span class="gender-label">酷酷的</span>
+                </button>
+                <button class="gender-btn girl" onclick="selectGender('girl')">
+                    <div class="gender-avatar"><img src="assets/partner_mitao.png" alt="蜜桃"></div>
+                    <span class="gender-label">可爱的</span>
+                </button>
+                <button class="gender-btn neutral" onclick="selectGender('neutral')">
+                    <div class="gender-avatar"><img src="assets/partner_yuntuan.png" alt="云团"></div>
+                    <span class="gender-label">萌萌的</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引导页 - 选择年龄 -->
+    <div id="onboard-age" class="screen">
+        <div class="onboard-container">
+            <div class="onboard-progress">
+                <div class="progress-dot completed"></div>
+                <div class="progress-dot completed"></div>
+                <div class="progress-dot completed"></div>
+                <div class="progress-dot active"></div>
+            </div>
+            <div class="onboard-illustration">
+                <div class="onboard-mascot pulse">🎂</div>
+            </div>
+            <h2 class="onboard-title">你几岁啦？</h2>
+            <p class="onboard-desc">这样我能更好地帮助你！</p>
+            <div class="age-options">
+                <button class="age-btn" onclick="selectAge(8)">8岁</button>
+                <button class="age-btn" onclick="selectAge(9)">9岁</button>
+                <button class="age-btn" onclick="selectAge(10)">10岁</button>
+                <button class="age-btn" onclick="selectAge(11)">11岁</button>
+                <button class="age-btn" onclick="selectAge(12)">12岁</button>
+                <button class="age-btn" onclick="selectAge(13)">13岁</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 伙伴出场页 -->
+    <div id="partner-reveal" class="screen">
+        <div class="reveal-container">
+            <div class="reveal-bg">
+                <div class="sparkle sp1">✨</div>
+                <div class="sparkle sp2">⭐</div>
+                <div class="sparkle sp3">🌟</div>
+                <div class="sparkle sp4">✨</div>
+                <div class="sparkle sp5">⭐</div>
+            </div>
+            <div id="egg-container" class="egg-container">
+                <div class="egg">🥚</div>
+            </div>
+            <div id="partner-container" class="partner-container hidden">
+                <div class="partner-glow"></div>
+                <div id="partner-avatar" class="partner-avatar"><img src="assets/partner_kuqi.png" alt="伙伴"></div>
+            </div>
+            <div id="reveal-text" class="reveal-text">
+                <h2>正在寻找你的专属伙伴...</h2>
+            </div>
+            <button id="start-journey-btn" class="primary-btn hidden" onclick="startJourney()">
+                <span>开始我们的旅程！</span>
+                <span class="btn-sparkle">✨</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- 主应用容器 -->
+    <div id="main-app" class="screen">
+        <!-- 顶部状态栏 -->
+        <header class="app-header">
+            <div class="user-info" onclick="showProfileSwitch()">
+                <div class="user-avatar">
+                    <span id="header-avatar">🦁</span>
+                </div>
+                <div class="user-details">
+                    <span class="user-name" id="header-name">小明</span>
+                    <span class="user-streak">🔥 连续7天</span>
+                </div>
+            </div>
+            <div class="header-stats">
+                <div class="stat-item">
+                    <span class="stat-icon">🌟</span>
+                    <span class="stat-value" id="star-count">128</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-icon">💎</span>
+                    <span class="stat-value" id="gem-count">45</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- 页面内容区 -->
+        <main class="app-content">
+            <!-- 首页 - 伙伴对话 -->
+            <div id="page-home" class="page active">
+                <div class="partner-section">
+                    <div class="partner-stage">
+                        <div class="stage-bg"></div>
+                        <div class="partner-character" id="main-partner" onclick="interactPartner()">
+                            <div class="partner-body"><img id="partner-img" src="assets/partner_kuqi.png" alt="伙伴">
+                            </div>
+                            <div class="partner-accessories">
+                                <span class="accessory hat" id="acc-hat"></span>
+                            </div>
+                            <div class="partner-expression" id="partner-expression"></div>
+                        </div>
+                        <div class="partner-level">
+                            <span class="level-badge">Lv.2</span>
+                            <div class="level-progress">
+                                <div class="level-bar" style="width: 65%"></div>
+                            </div>
+                            <span class="level-text">成长期</span>
+                        </div>
+                    </div>
+                    <div class="partner-dialog">
+                        <div class="dialog-bubble">
+                            <p id="partner-message">嗨~<span id="display-name">小明</span>！今天想完成什么目标呀？我来帮你规划！</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quick-actions">
+                    <div class="action-tags">
+                        <button class="tag-btn" onclick="selectQuickGoal('学习')">📚 学习</button>
+                        <button class="tag-btn" onclick="selectQuickGoal('运动')">⚽ 运动</button>
+                        <button class="tag-btn" onclick="selectQuickGoal('阅读')">📖 阅读</button>
+                        <button class="tag-btn" onclick="selectQuickGoal('家务')">🧹 家务</button>
+                    </div>
+                </div>
+
+                <div class="input-section">
+                    <div class="input-wrapper">
+                        <input type="text" id="goal-input" class="goal-input" placeholder="告诉我你想做什么...">
+                        <button class="voice-btn" onclick="startVoice()">🎤</button>
+                    </div>
+                    <button class="send-btn" onclick="submitGoal()">
+                        <span>发送</span>
+                        <span class="send-icon">🚀</span>
+                    </button>
+                </div>
+
+                <!-- 今日任务预览 -->
+                <div class="today-preview">
+                    <div class="preview-header">
+                        <h3>📋 今日任务</h3>
+                        <span class="preview-count">3/5 已完成</span>
+                    </div>
+                    <div class="preview-tasks">
+                        <div class="mini-task completed">
+                            <span class="task-check">✅</span>
+                            <span class="task-name">整理书桌</span>
+                        </div>
+                        <div class="mini-task completed">
+                            <span class="task-check">✅</span>
+                            <span class="task-name">背诵古诗</span>
+                        </div>
+                        <div class="mini-task completed">
+                            <span class="task-check">✅</span>
+                            <span class="task-name">跳绳100个</span>
+                        </div>
+                        <div class="mini-task">
+                            <span class="task-check">⭕</span>
+                            <span class="task-name">阅读30分钟</span>
+                        </div>
+                        <div class="mini-task">
+                            <span class="task-check">⭕</span>
+                            <span class="task-name">练习书法</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 任务页 -->
+            <div id="page-tasks" class="page">
+                <div class="page-header">
+                    <h2 class="page-title">📋 我的任务</h2>
+                    <div class="view-toggle">
+                        <button class="toggle-btn active" onclick="switchTaskView('list')">列表</button>
+                        <button class="toggle-btn" onclick="switchTaskView('calendar')">日历</button>
+                    </div>
+                </div>
+
+                <div class="task-tabs">
+                    <button class="task-tab active" onclick="filterTasks('all')">全部</button>
+                    <button class="task-tab" onclick="filterTasks('ai')">🤖 AI任务</button>
+                    <button class="task-tab" onclick="filterTasks('parent')">👨‍👩‍👧 家长任务</button>
+                </div>
+
+                <div class="task-list" id="task-list">
+                    <!-- AI任务 -->
+                    <div class="task-group">
+                        <div class="group-header">
+                            <span class="group-icon">🤖</span>
+                            <span class="group-title">伙伴任务</span>
+                        </div>
+
+                        <div class="task-card" onclick="showTaskDetail('task1')">
+                            <div class="task-status pending">
+                                <span class="status-dot"></span>
+                            </div>
+                            <div class="task-info">
+                                <h4 class="task-title">阅读《小王子》30分钟</h4>
+                                <div class="task-meta">
+                                    <span class="meta-item">⏰ 今天 19:00前</span>
+                                    <span class="meta-item reward">🌟 +15</span>
+                                </div>
+                            </div>
+                            <div class="task-action">
+                                <button class="complete-btn"
+                                    onclick="event.stopPropagation(); completeTask('task1')">完成</button>
+                            </div>
+                        </div>
+
+                        <div class="task-card" onclick="showTaskDetail('task2')">
+                            <div class="task-status pending">
+                                <span class="status-dot"></span>
+                            </div>
+                            <div class="task-info">
+                                <h4 class="task-title">练习书法20分钟</h4>
+                                <div class="task-meta">
+                                    <span class="meta-item">⏰ 今天 20:00前</span>
+                                    <span class="meta-item reward">🌟 +10</span>
+                                </div>
+                            </div>
+                            <div class="task-action">
+                                <button class="complete-btn"
+                                    onclick="event.stopPropagation(); completeTask('task2')">完成</button>
+                            </div>
+                        </div>
+
+                        <div class="task-card completed">
+                            <div class="task-status done">
+                                <span class="status-icon">✓</span>
+                            </div>
+                            <div class="task-info">
+                                <h4 class="task-title">整理书桌</h4>
+                                <div class="task-meta">
+                                    <span class="meta-item done">已完成</span>
+                                    <span class="meta-item reward earned">🌟 +5</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 家长任务 -->
+                    <div class="task-group">
+                        <div class="group-header">
+                            <span class="group-icon">👨‍👩‍👧</span>
+                            <span class="group-title">家长任务</span>
+                        </div>
+
+                        <div class="task-card parent-task" onclick="showTaskDetail('task3')">
+                            <div class="task-status pending">
+                                <span class="status-dot"></span>
+                            </div>
+                            <div class="task-info">
+                                <h4 class="task-title">帮妈妈洗碗</h4>
+                                <div class="task-meta">
+                                    <span class="meta-item">⏰ 今天晚饭后</span>
+                                    <span class="meta-item reward gem">💎 +10</span>
+                                </div>
+                                <div class="task-note">
+                                    <span class="note-icon">💬</span>
+                                    <span class="note-text">妈妈说：记得把碗擦干哦~</span>
+                                </div>
+                            </div>
+                            <div class="task-action">
+                                <button class="complete-btn waiting"
+                                    onclick="event.stopPropagation(); submitParentTask('task3')">提交</button>
+                            </div>
+                        </div>
+
+                        <div class="task-card parent-task completed">
+                            <div class="task-status done">
+                                <span class="status-icon">✓</span>
+                            </div>
+                            <div class="task-info">
+                                <h4 class="task-title">背诵古诗《静夜思》</h4>
+                                <div class="task-meta">
+                                    <span class="meta-item done">已确认</span>
+                                    <span class="meta-item reward gem earned">💎 +15</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 长期目标 -->
+                    <div class="long-term-goal">
+                        <div class="goal-header">
+                            <span class="goal-icon">🎯</span>
+                            <h3 class="goal-title">30天阅读计划</h3>
+                            <span class="goal-tag">进行中</span>
+                        </div>
+                        <div class="goal-progress">
+                            <div class="progress-info">
+                                <span>第12天 / 30天</span>
+                                <span>40%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 40%"></div>
+                            </div>
+                        </div>
+                        <div class="goal-reward">
+                            <span>完成目标奖励：</span>
+                            <span class="big-reward">🌟 200</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 日历视图 -->
+                <div class="calendar-view hidden" id="calendar-view">
+                    <div class="calendar-header">
+                        <button class="cal-nav">‹</button>
+                        <span class="cal-month">2026年1月</span>
+                        <button class="cal-nav">›</button>
+                    </div>
+                    <div class="calendar-grid">
+                        <div class="cal-day-name">日</div>
+                        <div class="cal-day-name">一</div>
+                        <div class="cal-day-name">二</div>
+                        <div class="cal-day-name">三</div>
+                        <div class="cal-day-name">四</div>
+                        <div class="cal-day-name">五</div>
+                        <div class="cal-day-name">六</div>
+
+                        <div class="cal-day other">29</div>
+                        <div class="cal-day other">30</div>
+                        <div class="cal-day other">31</div>
+                        <div class="cal-day">1 <span class="day-status full">●</span></div>
+                        <div class="cal-day">2 <span class="day-status full">●</span></div>
+                        <div class="cal-day">3 <span class="day-status partial">◐</span></div>
+                        <div class="cal-day">4 <span class="day-status full">●</span></div>
+                        <div class="cal-day">5 <span class="day-status full">●</span></div>
+                        <div class="cal-day">6 <span class="day-status full">●</span></div>
+                        <div class="cal-day">7 <span class="day-status partial">◐</span></div>
+                        <div class="cal-day">8 <span class="day-status full">●</span></div>
+                        <div class="cal-day">9 <span class="day-status full">●</span></div>
+                        <div class="cal-day today">10 <span class="day-status partial">◐</span></div>
+                        <div class="cal-day">11</div>
+                        <div class="cal-day">12</div>
+                        <div class="cal-day">13</div>
+                        <div class="cal-day">14</div>
+                        <div class="cal-day">15</div>
+                        <div class="cal-day">16</div>
+                        <div class="cal-day">17</div>
+                        <div class="cal-day">18</div>
+                        <div class="cal-day">19</div>
+                        <div class="cal-day">20</div>
+                        <div class="cal-day">21</div>
+                    </div>
+                    <div class="calendar-legend">
+                        <span class="legend-item"><span class="day-status full">●</span> 全部完成</span>
+                        <span class="legend-item"><span class="day-status partial">◐</span> 部分完成</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 奖励页 -->
+            <div id="page-rewards" class="page">
+                <div class="page-header">
+                    <h2 class="page-title">🎁 奖励商城</h2>
+                </div>
+
+                <div class="reward-tabs">
+                    <button class="reward-tab active" onclick="switchRewardTab('shop')">🛍️ 装扮</button>
+                    <button class="reward-tab" onclick="switchRewardTab('evolution')">✨ 进化</button>
+                    <button class="reward-tab" onclick="switchRewardTab('wishes')">🎁 心愿</button>
+                </div>
+
+                <!-- 装扮商城 -->
+                <div class="reward-content" id="shop-content">
+                    <div class="shop-category">
+                        <h3 class="category-title">👑 头饰</h3>
+                        <div class="shop-items">
+                            <div class="shop-item" onclick="previewItem('crown')">
+                                <div class="item-preview">👑</div>
+                                <div class="item-info">
+                                    <span class="item-name">小皇冠</span>
+                                    <span class="item-price">🌟 50</span>
+                                </div>
+                            </div>
+                            <div class="shop-item" onclick="previewItem('cap')">
+                                <div class="item-preview">🧢</div>
+                                <div class="item-info">
+                                    <span class="item-name">酷炫棒球帽</span>
+                                    <span class="item-price">🌟 30</span>
+                                </div>
+                            </div>
+                            <div class="shop-item owned" onclick="previewItem('bow')">
+                                <div class="item-preview">🎀</div>
+                                <div class="item-info">
+                                    <span class="item-name">蝴蝶结</span>
+                                    <span class="item-status">已拥有</span>
+                                </div>
+                            </div>
+                            <div class="shop-item locked" onclick="showVipHint()">
+                                <div class="item-preview">
+                                    <span class="item-emoji">✨</span>
+                                    <span class="lock-icon">🔒</span>
+                                </div>
+                                <div class="item-info">
+                                    <span class="item-name">星光头环</span>
+                                    <span class="item-vip">会员专属</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="shop-category">
+                        <h3 class="category-title">🎒 背饰</h3>
+                        <div class="shop-items">
+                            <div class="shop-item" onclick="previewItem('wings')">
+                                <div class="item-preview">🦋</div>
+                                <div class="item-info">
+                                    <span class="item-name">彩虹翅膀</span>
+                                    <span class="item-price">🌟 80</span>
+                                </div>
+                            </div>
+                            <div class="shop-item" onclick="previewItem('cape')">
+                                <div class="item-preview">🧣</div>
+                                <div class="item-info">
+                                    <span class="item-name">英雄披风</span>
+                                    <span class="item-price">🌟 60</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="shop-category">
+                        <h3 class="category-title">🪄 手持</h3>
+                        <div class="shop-items">
+                            <div class="shop-item" onclick="previewItem('wand')">
+                                <div class="item-preview">🪄</div>
+                                <div class="item-info">
+                                    <span class="item-name">魔法棒</span>
+                                    <span class="item-price">🌟 45</span>
+                                </div>
+                            </div>
+                            <div class="shop-item" onclick="previewItem('balloon')">
+                                <div class="item-preview">🎈</div>
+                                <div class="item-info">
+                                    <span class="item-name">彩色气球</span>
+                                    <span class="item-price">🌟 25</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 进化预览 -->
+                <div class="reward-content hidden" id="evolution-content">
+                    <div class="evolution-display">
+                        <div class="current-form">
+                            <div class="form-avatar">🦁</div>
+                            <span class="form-name">酷奇</span>
+                            <span class="form-level">Lv.2 成长期</span>
+                        </div>
+                        <div class="evolution-progress">
+                            <div class="evo-bar">
+                                <div class="evo-fill" style="width: 65%"></div>
+                            </div>
+                            <span class="evo-text">活跃度: 195 / 300</span>
+                        </div>
+                    </div>
+
+                    <div class="evolution-stages">
+                        <h3 class="stages-title">进化形态预览</h3>
+                        <div class="stages-list">
+                            <div class="stage-item completed">
+                                <div class="stage-avatar">🥚</div>
+                                <span class="stage-name">幼生期</span>
+                                <span class="stage-badge">✓</span>
+                            </div>
+                            <div class="stage-item current">
+                                <div class="stage-avatar">🦁</div>
+                                <span class="stage-name">成长期</span>
+                                <span class="stage-badge">当前</span>
+                            </div>
+                            <div class="stage-item next">
+                                <div class="stage-avatar">🦁</div>
+                                <span class="stage-glow"></span>
+                                <span class="stage-name">进化期</span>
+                                <span class="stage-req">还需105活跃度</span>
+                            </div>
+                            <div class="stage-item locked">
+                                <div class="stage-avatar silhouette">?</div>
+                                <span class="stage-name">觉醒期</span>
+                                <span class="stage-lock">🔒 会员解锁</span>
+                            </div>
+                            <div class="stage-item locked">
+                                <div class="stage-avatar silhouette">?</div>
+                                <span class="stage-name">传说期</span>
+                                <span class="stage-lock">🔒 会员解锁</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 心愿商城 -->
+                <div class="reward-content hidden" id="wishes-content">
+                    <div class="wishes-balance">
+                        <span class="balance-label">我的心愿币</span>
+                        <span class="balance-value">💎 45</span>
+                    </div>
+
+                    <div class="wishes-list">
+                        <div class="wish-item" onclick="showWishDetail('wish1')">
+                            <div class="wish-icon">🍦</div>
+                            <div class="wish-info">
+                                <h4 class="wish-name">一支冰淇淋</h4>
+                                <p class="wish-from">妈妈设置的奖励</p>
+                            </div>
+                            <div class="wish-price">
+                                <span class="price-value">💎 20</span>
+                                <button class="redeem-btn">兑换</button>
+                            </div>
+                        </div>
+
+                        <div class="wish-item" onclick="showWishDetail('wish2')">
+                            <div class="wish-icon">📺</div>
+                            <div class="wish-info">
+                                <h4 class="wish-name">看动画片30分钟</h4>
+                                <p class="wish-from">爸爸设置的奖励</p>
+                            </div>
+                            <div class="wish-price">
+                                <span class="price-value">💎 30</span>
+                                <button class="redeem-btn">兑换</button>
+                            </div>
+                        </div>
+
+                        <div class="wish-item" onclick="showWishDetail('wish3')">
+                            <div class="wish-icon">🎮</div>
+                            <div class="wish-info">
+                                <h4 class="wish-name">玩游戏1小时</h4>
+                                <p class="wish-from">妈妈设置的奖励</p>
+                            </div>
+                            <div class="wish-price">
+                                <span class="price-value">💎 50</span>
+                                <button class="redeem-btn disabled">余额不足</button>
+                            </div>
+                        </div>
+
+                        <div class="wish-item special" onclick="showWishDetail('wish4')">
+                            <div class="wish-icon">🎢</div>
+                            <div class="wish-info">
+                                <h4 class="wish-name">周末去游乐园</h4>
+                                <p class="wish-from">特别奖励</p>
+                            </div>
+                            <div class="wish-price">
+                                <span class="price-value">💎 200</span>
+                                <div class="wish-progress">
+                                    <div class="wish-bar" style="width: 22%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 我的页 -->
+            <div id="page-profile" class="page">
+                <div class="profile-header">
+                    <div class="profile-card">
+                        <div class="profile-avatar" id="profile-avatar">🦁</div>
+                        <div class="profile-info">
+                            <h2 class="profile-name" id="profile-name">小明</h2>
+                            <div class="profile-stats">
+                                <span class="stat">📅 已坚持 42 天</span>
+                                <span class="stat">✅ 完成 156 个任务</span>
+                            </div>
+                        </div>
+                        <div class="vip-badge free">
+                            <span>免费版</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="profile-sections">
+                    <div class="section-card" onclick="showVipPage()">
+                        <div class="section-icon vip">👑</div>
+                        <div class="section-content">
+                            <h3>开通会员</h3>
+                            <p>解锁完整功能，让伙伴陪你更久！</p>
+                        </div>
+                        <span class="section-arrow">›</span>
+                    </div>
+
+                    <div class="section-card" onclick="showDataStats()">
+                        <div class="section-icon stats">📊</div>
+                        <div class="section-content">
+                            <h3>成长数据</h3>
+                            <p>查看你的进步轨迹</p>
+                        </div>
+                        <span class="section-arrow">›</span>
+                    </div>
+
+                    <div class="section-card" onclick="showWardrobe()">
+                        <div class="section-icon wardrobe">🎽</div>
+                        <div class="section-content">
+                            <h3>我的仓库</h3>
+                            <p>已收集 8 件装饰</p>
+                        </div>
+                        <span class="section-arrow">›</span>
+                    </div>
+
+                    <div class="section-card" onclick="switchProfile()">
+                        <div class="section-icon switch">🔄</div>
+                        <div class="section-content">
+                            <h3>切换角色</h3>
+                            <p>当前家庭有 2 个宝贝</p>
+                        </div>
+                        <span class="section-arrow">›</span>
+                    </div>
+
+                    <div class="section-card parent-entry" onclick="enterParentMode()">
+                        <div class="section-icon parent">👨‍👩‍👧</div>
+                        <div class="section-content">
+                            <h3>家长设置</h3>
+                            <p>管理任务、查看报告</p>
+                        </div>
+                        <span class="section-arrow">›</span>
+                    </div>
+
+                    <div class="section-card" onclick="showSettings()">
+                        <div class="section-icon settings">⚙️</div>
+                        <div class="section-content">
+                            <h3>设置</h3>
+                            <p>音效、通知、关于</p>
+                        </div>
+                        <span class="section-arrow">›</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- 底部导航栏 -->
+        <nav class="app-nav">
+            <button class="nav-item active" onclick="switchPage('home')">
+                <span class="nav-icon">🏠</span>
+                <span class="nav-label">首页</span>
+            </button>
+            <button class="nav-item" onclick="switchPage('tasks')">
+                <span class="nav-icon">📋</span>
+                <span class="nav-label">任务</span>
+                <span class="nav-badge">2</span>
+            </button>
+            <button class="nav-item" onclick="switchPage('rewards')">
+                <span class="nav-icon">🎁</span>
+                <span class="nav-label">奖励</span>
+            </button>
+            <button class="nav-item" onclick="switchPage('profile')">
+                <span class="nav-icon">👤</span>
+                <span class="nav-label">我的</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- 任务完成庆祝弹窗 -->
+    <div id="celebration-modal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="celebration-content">
+            <div class="confetti-container">
+                <span class="confetti c1">🎉</span>
+                <span class="confetti c2">⭐</span>
+                <span class="confetti c3">✨</span>
+                <span class="confetti c4">🌟</span>
+                <span class="confetti c5">🎊</span>
+            </div>
+            <div class="celebration-partner">🦁</div>
+            <h2 class="celebration-title">太棒了！</h2>
+            <p class="celebration-message">你完成了任务「<span id="completed-task-name">阅读30分钟</span>」</p>
+            <div class="celebration-reward">
+                <span class="reward-earned">+15</span>
+                <span class="reward-icon">🌟</span>
+            </div>
+            <button class="primary-btn" onclick="closeCelebration()">
+                <span>继续加油！</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- 会员购买弹窗 -->
+    <div id="vip-modal" class="modal hidden">
+        <div class="modal-overlay" onclick="closeVipModal()"></div>
+        <div class="vip-content">
+            <button class="modal-close" onclick="closeVipModal()">×</button>
+            <div class="vip-header">
+                <span class="vip-crown">👑</span>
+                <h2>开通星伴会员</h2>
+                <p>解锁完整功能，让成长更有趣！</p>
+            </div>
+            <div class="vip-benefits">
+                <div class="benefit-item">
+                    <span class="benefit-icon">🎯</span>
+                    <span>无限目标规划</span>
+                </div>
+                <div class="benefit-item">
+                    <span class="benefit-icon">✨</span>
+                    <span>完整5阶段进化</span>
+                </div>
+                <div class="benefit-item">
+                    <span class="benefit-icon">👑</span>
+                    <span>专属会员装饰</span>
+                </div>
+                <div class="benefit-item">
+                    <span class="benefit-icon">📊</span>
+                    <span>无限AI报告解读</span>
+                </div>
+            </div>
+            <div class="vip-plans">
+                <div class="plan-card" onclick="selectPlan('monthly')">
+                    <span class="plan-name">月度会员</span>
+                    <span class="plan-price">¥9.9<small>/月</small></span>
+                </div>
+                <div class="plan-card recommended" onclick="selectPlan('lifetime')">
+                    <span class="plan-tag">超值</span>
+                    <span class="plan-name">终身会员</span>
+                    <span class="plan-price">¥99</span>
+                    <span class="plan-hint">相当于10个月</span>
+                </div>
+            </div>
+            <button class="vip-buy-btn" onclick="showParentVerify()">
+                <span>立即开通</span>
+            </button>
+            <p class="vip-note">需要家长验证才能完成支付</p>
+        </div>
+    </div>
+
+    <!-- 家长验证弹窗 -->
+    <div id="verify-modal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="verify-content">
+            <div class="verify-header">
+                <span class="verify-icon">🔐</span>
+                <h2>家长验证</h2>
+                <p>请家长协助完成以下验证</p>
+            </div>
+            <div class="verify-question">
+                <p class="question-label">请计算：</p>
+                <p class="question-math" id="verify-question">47 × 23 = ?</p>
+            </div>
+            <input type="number" id="verify-answer" class="verify-input" placeholder="输入答案">
+            <button class="primary-btn" onclick="verifyParent()">
+                <span>确认</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- 角色切换弹窗 -->
+    <div id="switch-modal" class="modal hidden">
+        <div class="modal-overlay" onclick="closeSwitchModal()"></div>
+        <div class="switch-content">
+            <h2 class="switch-title">选择角色</h2>
+            <div class="profile-list">
+                <div class="profile-item active">
+                    <div class="profile-item-avatar">🦁</div>
+                    <div class="profile-item-info">
+                        <span class="profile-item-name">小明</span>
+                        <span class="profile-item-level">Lv.2 成长期</span>
+                    </div>
+                    <span class="profile-item-check">✓</span>
+                </div>
+                <div class="profile-item" onclick="switchToProfile('xiaohong')">
+                    <div class="profile-item-avatar">🐰</div>
+                    <div class="profile-item-info">
+                        <span class="profile-item-name">小红</span>
+                        <span class="profile-item-level">Lv.1 幼生期</span>
+                    </div>
+                </div>
+                <div class="profile-item add-new">
+                    <div class="profile-item-avatar">➕</div>
+                    <div class="profile-item-info">
+                        <span class="profile-item-name">添加新角色</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 家长管理中心 -->
+    <div id="parent-center" class="screen">
+        <header class="parent-header">
+            <button class="back-btn" onclick="exitParentMode()">‹ 返回</button>
+            <h1>家长管理中心</h1>
+        </header>
+
+        <div class="parent-content">
+            <div class="parent-child-selector">
+                <span class="selector-label">当前查看：</span>
+                <select class="child-select">
+                    <option>小明</option>
+                    <option>小红</option>
+                </select>
+            </div>
+
+            <div class="parent-sections">
+                <div class="parent-card" onclick="showParentReport()">
+                    <div class="card-icon">📊</div>
+                    <div class="card-content">
+                        <h3>数据报告</h3>
+                        <p>本周完成 18 个任务，获得 156 🌟</p>
+                    </div>
+                    <span class="card-arrow">›</span>
+                </div>
+
+                <div class="parent-card" onclick="showParentTasks()">
+                    <div class="card-icon">📝</div>
+                    <div class="card-content">
+                        <h3>任务管理</h3>
+                        <p>2 个任务待确认</p>
+                    </div>
+                    <span class="card-badge">2</span>
+                    <span class="card-arrow">›</span>
+                </div>
+
+                <div class="parent-card" onclick="showParentRewards()">
+                    <div class="card-icon">🎁</div>
+                    <div class="card-content">
+                        <h3>奖励管理</h3>
+                        <p>已设置 4 个奖励商品</p>
+                    </div>
+                    <span class="card-arrow">›</span>
+                </div>
+
+                <div class="parent-card" onclick="showChildManage()">
+                    <div class="card-icon">👶</div>
+                    <div class="card-content">
+                        <h3>孩子管理</h3>
+                        <p>2 个孩子角色</p>
+                    </div>
+                    <span class="card-arrow">›</span>
+                </div>
+
+                <div class="parent-card" onclick="showParentSettings()">
+                    <div class="card-icon">⚙️</div>
+                    <div class="card-content">
+                        <h3>系统设置</h3>
+                        <p>通知、账号安全</p>
+                    </div>
+                    <span class="card-arrow">›</span>
+                </div>
+            </div>
+
+            <!-- 快捷操作 -->
+            <div class="quick-actions-parent">
+                <button class="quick-action-btn" onclick="createParentTask()">
+                    <span class="action-icon">➕</span>
+                    <span>发布任务</span>
+                </button>
+                <button class="quick-action-btn" onclick="createReward()">
+                    <span class="action-icon">🎁</span>
+                    <span>设置奖励</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 音效（模拟） -->
+    <audio id="sound-complete" preload="auto"></audio>
+    <audio id="sound-coin" preload="auto"></audio>
+    <audio id="sound-click" preload="auto"></audio>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
