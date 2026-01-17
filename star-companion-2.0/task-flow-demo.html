@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>星伴 - AI任务拆解交互演示</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #7C3AED;
+            --primary-light: #A78BFA;
+            --secondary: #F472B6;
+            --accent: #34D399;
+            --warning: #FBBF24;
+            --bg-gradient: linear-gradient(135deg, #E0E7FF 0%, #FCE7F3 50%, #DBEAFE 100%);
+            --bg-card: rgba(255, 255, 255, 0.95);
+            --text-primary: #1E1B4B;
+            --text-secondary: #6B7280;
+            --radius-lg: 20px;
+            --radius-full: 9999px;
+            --shadow-soft: 0 4px 20px rgba(124, 58, 237, 0.12);
+            --shadow-float: 0 10px 40px rgba(124, 58, 237, 0.2);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            color: var(--text-primary);
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        .app-container {
+            max-width: 420px;
+            margin: 0 auto;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-gradient);
+            position: relative;
+        }
+
+        /* Header */
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: var(--bg-card);
+            border-bottom: 1px solid rgba(124, 58, 237, 0.1);
+        }
+
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .user-name {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .user-streak {
+            font-size: 12px;
+            color: var(--warning);
+        }
+
+        .header-stats {
+            display: flex;
+            gap: 14px;
+        }
+
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        /* Chat Area */
+        .chat-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            padding-bottom: 180px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* Message Bubbles */
+        .message {
+            display: flex;
+            gap: 10px;
+            max-width: 90%;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .message.partner {
+            align-self: flex-start;
+        }
+
+        .message.user {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .message-bubble {
+            padding: 12px 16px;
+            border-radius: var(--radius-lg);
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        .message.partner .message-bubble {
+            background: var(--bg-card);
+            border-bottom-left-radius: 6px;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .message.user .message-bubble {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            border-bottom-right-radius: 6px;
+        }
+
+        /* Thinking Animation */
+        .thinking-container {
+            display: flex;
+            gap: 10px;
+            align-self: flex-start;
+            max-width: 90%;
+        }
+
+        .thinking-bubble {
+            padding: 16px 24px;
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            border-bottom-left-radius: 6px;
+            box-shadow: var(--shadow-soft);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .thinking-avatar {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            animation: bounce 1s ease-in-out infinite;
+        }
+
+        .thinking-dots {
+            display: flex;
+            gap: 4px;
+        }
+
+        .thinking-dots span {
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: pulse 1.4s ease-in-out infinite;
+        }
+
+        .thinking-dots span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .thinking-dots span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        .thinking-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* Task Plan Card */
+        .task-plan-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-float);
+            overflow: hidden;
+            margin: 8px 0;
+            animation: slideUp 0.4s ease-out;
+        }
+
+        .plan-header {
+            padding: 16px;
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(244, 114, 182, 0.1));
+            border-bottom: 1px solid rgba(124, 58, 237, 0.1);
+        }
+
+        .plan-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .plan-meta {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .plan-steps {
+            padding: 12px 16px;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 0;
+            border-bottom: 1px dashed rgba(124, 58, 237, 0.1);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .step-item:last-child {
+            border-bottom: none;
+        }
+
+        .step-item:hover {
+            background: rgba(124, 58, 237, 0.03);
+            margin: 0 -16px;
+            padding-left: 16px;
+            padding-right: 16px;
+        }
+
+        .step-number {
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .step-icon {
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .step-name {
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 2px;
+        }
+
+        .step-time {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .step-reward {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--warning);
+            flex-shrink: 0;
+        }
+
+        .plan-bonus {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 16px;
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.15), rgba(52, 211, 153, 0.15));
+            border-top: 1px solid rgba(124, 58, 237, 0.1);
+        }
+
+        .bonus-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .bonus-value {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 12px;
+            padding: 0 4px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 14px 20px;
+            border-radius: var(--radius-full);
+            font-family: 'Fredoka', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .action-btn.primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
+        }
+
+        .action-btn.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(124, 58, 237, 0.5);
+        }
+
+        .action-btn.secondary {
+            background: rgba(124, 58, 237, 0.1);
+            color: var(--primary);
+        }
+
+        .action-btn.secondary:hover {
+            background: rgba(124, 58, 237, 0.15);
+        }
+
+        /* Quick Tags */
+        .quick-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+
+        .quick-tag {
+            padding: 8px 14px;
+            background: var(--bg-card);
+            border-radius: var(--radius-full);
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--primary);
+            border: 1px solid rgba(124, 58, 237, 0.2);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .quick-tag:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Input Area */
+        .input-area {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            max-width: 420px;
+            margin: 0 auto;
+            padding: 12px 16px 28px;
+            background: var(--bg-card);
+            border-top: 1px solid rgba(124, 58, 237, 0.1);
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .input-wrapper {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .text-input {
+            flex: 1;
+            padding: 14px 18px;
+            border: 2px solid rgba(124, 58, 237, 0.15);
+            border-radius: var(--radius-full);
+            font-size: 15px;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .text-input:focus {
+            border-color: var(--primary);
+        }
+
+        .text-input::placeholder {
+            color: #9CA3AF;
+        }
+
+        .voice-btn,
+        .send-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: all 0.2s;
+        }
+
+        .voice-btn {
+            background: rgba(124, 58, 237, 0.1);
+            color: var(--primary);
+        }
+
+        .voice-btn:hover {
+            background: rgba(124, 58, 237, 0.2);
+        }
+
+        .send-btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
+        }
+
+        .send-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Execution Mode */
+        .execution-screen {
+            position: fixed;
+            inset: 0;
+            background: var(--bg-gradient);
+            z-index: 100;
+            display: none;
+            flex-direction: column;
+        }
+
+        .execution-screen.active {
+            display: flex;
+        }
+
+        .exec-header {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            background: var(--bg-card);
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 8px;
+            margin-right: 12px;
+        }
+
+        .exec-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .exec-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .current-step-card {
+            background: var(--bg-card);
+            border-radius: 24px;
+            padding: 32px 24px;
+            box-shadow: var(--shadow-float);
+            width: 100%;
+            max-width: 320px;
+            margin-bottom: 24px;
+        }
+
+        .step-progress-indicator {
+            font-size: 14px;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .step-big-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        .step-big-name {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .step-description {
+            font-size: 15px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .step-timer {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: rgba(124, 58, 237, 0.1);
+            border-radius: var(--radius-full);
+            font-size: 14px;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .partner-encourage {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--bg-card);
+            padding: 16px 20px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-soft);
+            margin-bottom: 24px;
+            width: 100%;
+            max-width: 320px;
+        }
+
+        .encourage-avatar {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+        }
+
+        .encourage-text {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .complete-step-btn {
+            width: 100%;
+            max-width: 280px;
+            padding: 18px 32px;
+            background: linear-gradient(135deg, var(--accent), #10B981);
+            color: white;
+            border: none;
+            border-radius: var(--radius-full);
+            font-family: 'Fredoka', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(52, 211, 153, 0.4);
+            transition: all 0.2s;
+        }
+
+        .complete-step-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(52, 211, 153, 0.5);
+        }
+
+        .help-options {
+            display: flex;
+            gap: 16px;
+            margin-top: 16px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .help-link {
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .help-link:hover {
+            color: var(--primary);
+        }
+
+        /* Progress Bar */
+        .progress-bar-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 20px;
+            width: 100%;
+            max-width: 280px;
+        }
+
+        .progress-step {
+            flex: 1;
+            height: 6px;
+            background: rgba(124, 58, 237, 0.15);
+            border-radius: 3px;
+        }
+
+        .progress-step.completed {
+            background: var(--accent);
+        }
+
+        .progress-step.current {
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+        }
+
+        /* Celebration Screen */
+        .celebration-screen {
+            position: fixed;
+            inset: 0;
+            background: var(--bg-gradient);
+            z-index: 200;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 24px;
+        }
+
+        .celebration-screen.active {
+            display: flex;
+        }
+
+        .confetti-area {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .confetti-piece {
+            position: absolute;
+            font-size: 28px;
+            animation: confetti 3s ease-out forwards;
+        }
+
+        .celebration-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .celebration-icon {
+            font-size: 80px;
+            margin-bottom: 16px;
+            animation: bounce 1s ease-in-out infinite;
+        }
+
+        .celebration-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .celebration-subtitle {
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+
+        .reward-display {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--warning);
+            margin-bottom: 32px;
+        }
+
+        .continue-btn {
+            padding: 16px 48px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            border: none;
+            border-radius: var(--radius-full);
+            font-family: 'Fredoka', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.5;
+                transform: scale(0.8);
+            }
+        }
+
+        @keyframes confetti {
+            0% {
+                transform: translateY(-20px) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Hidden utility */
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="user-section">
+                <img src="assets/partner_kuqi.png" alt="头像" class="user-avatar">
+                <div>
+                    <div class="user-name">小星星</div>
+                    <div class="user-streak">🔥 连续7天</div>
+                </div>
+            </div>
+            <div class="header-stats">
+                <div class="stat">🌟 <span id="star-count">128</span></div>
+                <div class="stat">💎 <span>45</span></div>
+            </div>
+        </header>
+
+        <!-- Chat Area -->
+        <div class="chat-area" id="chat-area">
+            <!-- Initial greeting -->
+            <div class="message partner">
+                <img src="assets/partner_kuqi.png" alt="酷奇" class="message-avatar">
+                <div class="message-bubble">
+                    嗨~小星星！今天想完成什么目标呀？告诉我，我来帮你规划！✨
+                </div>
+            </div>
+
+            <!-- Quick Tags -->
+            <div class="quick-tags" id="quick-tags">
+                <button class="quick-tag" onclick="selectQuickGoal('整理房间')">🛏️ 整理房间</button>
+                <button class="quick-tag" onclick="selectQuickGoal('写作业')">📝 写作业</button>
+                <button class="quick-tag" onclick="selectQuickGoal('阅读')">📖 阅读</button>
+                <button class="quick-tag" onclick="selectQuickGoal('运动')">⚽ 运动</button>
+            </div>
+        </div>
+
+        <!-- Input Area -->
+        <div class="input-area">
+            <div class="input-wrapper">
+                <input type="text" class="text-input" id="goal-input" placeholder="告诉酷奇你想做什么...">
+                <button class="voice-btn">🎤</button>
+                <button class="send-btn" onclick="submitGoal()">➤</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Execution Screen -->
+    <div class="execution-screen" id="execution-screen">
+        <header class="exec-header">
+            <button class="back-btn" onclick="exitExecution()">←</button>
+            <span class="exec-title">正在进行中</span>
+        </header>
+        <div class="exec-content">
+            <div class="current-step-card">
+                <div class="step-progress-indicator" id="step-indicator">步骤 1 / 4</div>
+                <div class="step-big-icon" id="step-icon">🛏️</div>
+                <div class="step-big-name" id="step-name">铺好床铺</div>
+                <div class="step-description" id="step-desc">把被子叠整齐，枕头放好~</div>
+                <div class="step-timer">⏱️ 预计 5 分钟</div>
+            </div>
+
+            <div class="partner-encourage">
+                <img src="assets/partner_kuqi.png" alt="酷奇" class="encourage-avatar">
+                <div class="encourage-text">加油！你一定可以的！<br>完成后点下面的按钮告诉我~</div>
+            </div>
+
+            <button class="complete-step-btn" onclick="completeStep()">✅ 我完成了！</button>
+
+            <div class="help-options">
+                <span class="help-link">需要帮助？</span>
+                <span class="help-link">跳过这一步</span>
+                <span class="help-link">遇到困难</span>
+            </div>
+
+            <div class="progress-bar-container" id="progress-bar">
+                <div class="progress-step current"></div>
+                <div class="progress-step"></div>
+                <div class="progress-step"></div>
+                <div class="progress-step"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Celebration Screen -->
+    <div class="celebration-screen" id="celebration-screen">
+        <div class="confetti-area" id="confetti-area"></div>
+        <div class="celebration-content">
+            <div class="celebration-icon">🎉</div>
+            <h1 class="celebration-title">太棒了！</h1>
+            <p class="celebration-subtitle" id="celebration-text">你完成了「铺好床铺」</p>
+            <div class="reward-display">
+                <span>+5</span>
+                <span>🌟</span>
+            </div>
+            <button class="continue-btn" onclick="continueNextStep()">继续下一步 →</button>
+        </div>
+    </div>
+
+    <script>
+        // 任务步骤数据
+        const taskPlan = {
+            title: '整理房间',
+            totalTime: 25,
+            steps: [
+                { icon: '🛏️', name: '铺好床铺', desc: '把被子叠整齐，枕头放好~', time: 5, reward: 5 },
+                { icon: '📚', name: '整理书桌', desc: '把书本文具摆放整齐', time: 8, reward: 8 },
+                { icon: '🧸', name: '收拾玩具', desc: '把玩具都放回原位', time: 7, reward: 7 },
+                { icon: '✨', name: '最后检查', desc: '检查一遍，确保都整理好了', time: 5, reward: 5 }
+            ],
+            bonusReward: 10
+        };
+
+        let currentStepIndex = 0;
+        let totalStars = 128;
+
+        // 选择快捷目标
+        function selectQuickGoal(goal) {
+            document.getElementById('goal-input').value = goal;
+            submitGoal();
+        }
+
+        // 提交目标
+        function submitGoal() {
+            const input = document.getElementById('goal-input');
+            const goal = input.value.trim();
+            if (!goal) return;
+
+            const chatArea = document.getElementById('chat-area');
+
+            // 隐藏快捷标签
+            document.getElementById('quick-tags').classList.add('hidden');
+
+            // 添加用户消息
+            chatArea.innerHTML += `
+                <div class="message user">
+                    <div class="message-bubble">${goal}</div>
+                </div>
+            `;
+
+            input.value = '';
+
+            // 伙伴回应
+            setTimeout(() => {
+                chatArea.innerHTML += `
+                    <div class="message partner">
+                        <img src="assets/partner_kuqi.png" alt="酷奇" class="message-avatar">
+                        <div class="message-bubble">
+                            ${goal}！太棒了！🌟<br>让我帮你想想怎么做最有效率...
+                        </div>
+                    </div>
+                `;
+                scrollToBottom();
+
+                // 显示思考动画
+                setTimeout(() => {
+                    chatArea.innerHTML += `
+                        <div class="thinking-container" id="thinking">
+                            <img src="assets/partner_kuqi.png" alt="酷奇" class="message-avatar">
+                            <div class="thinking-bubble">
+                                <img src="assets/partner_kuqi.png" alt="" class="thinking-avatar">
+                                <div>
+                                    <div class="thinking-dots">
+                                        <span></span><span></span><span></span>
+                                    </div>
+                                    <div class="thinking-text">正在思考中...</div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    scrollToBottom();
+
+                    // 3秒后显示任务计划
+                    setTimeout(() => {
+                        document.getElementById('thinking').remove();
+                        showTaskPlan();
+                    }, 2500);
+                }, 800);
+            }, 500);
+
+            scrollToBottom();
+        }
+
+        // 显示任务计划
+        function showTaskPlan() {
+            const chatArea = document.getElementById('chat-area');
+
+            let stepsHTML = taskPlan.steps.map((step, i) => `
+                <div class="step-item">
+                    <div class="step-number">${i + 1}</div>
+                    <div class="step-icon">${step.icon}</div>
+                    <div class="step-content">
+                        <div class="step-name">${step.name}</div>
+                        <div class="step-time">${step.time}分钟</div>
+                    </div>
+                    <div class="step-reward">🌟+${step.reward}</div>
+                </div>
+            `).join('');
+
+            chatArea.innerHTML += `
+                <div class="message partner">
+                    <img src="assets/partner_kuqi.png" alt="酷奇" class="message-avatar">
+                    <div class="message-bubble">
+                        我帮你把任务拆成了${taskPlan.steps.length}个小步骤！<br>
+                        每完成一步就能获得星星哦~ ⭐
+                    </div>
+                </div>
+
+                <div class="task-plan-card">
+                    <div class="plan-header">
+                        <div class="plan-title">📋 ${taskPlan.title}计划</div>
+                        <div class="plan-meta">预计${taskPlan.totalTime}分钟 · ${taskPlan.steps.length}个步骤</div>
+                    </div>
+                    <div class="plan-steps">
+                        ${stepsHTML}
+                    </div>
+                    <div class="plan-bonus">
+                        <span class="bonus-text">🎁 全部完成额外奖励</span>
+                        <span class="bonus-value">🌟+${taskPlan.bonusReward}</span>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="action-btn secondary">我想调整</button>
+                    <button class="action-btn primary" onclick="startExecution()">开始挑战！🚀</button>
+                </div>
+            `;
+
+            scrollToBottom();
+        }
+
+        // 开始执行
+        function startExecution() {
+            currentStepIndex = 0;
+            updateStepDisplay();
+            document.getElementById('execution-screen').classList.add('active');
+        }
+
+        // 更新步骤显示
+        function updateStepDisplay() {
+            const step = taskPlan.steps[currentStepIndex];
+            document.getElementById('step-indicator').textContent = `步骤 ${currentStepIndex + 1} / ${taskPlan.steps.length}`;
+            document.getElementById('step-icon').textContent = step.icon;
+            document.getElementById('step-name').textContent = step.name;
+            document.getElementById('step-desc').textContent = step.desc;
+
+            // 更新进度条
+            const progressSteps = document.querySelectorAll('.progress-step');
+            progressSteps.forEach((el, i) => {
+                el.classList.remove('completed', 'current');
+                if (i < currentStepIndex) el.classList.add('completed');
+                if (i === currentStepIndex) el.classList.add('current');
+            });
+        }
+
+        // 完成步骤
+        function completeStep() {
+            const step = taskPlan.steps[currentStepIndex];
+
+            // 更新星星
+            totalStars += step.reward;
+            document.getElementById('star-count').textContent = totalStars;
+
+            // 显示庆祝
+            document.getElementById('celebration-text').textContent = `你完成了「${step.name}」`;
+            document.querySelector('.reward-display span').textContent = `+${step.reward}`;
+
+            // 生成彩纸
+            spawnConfetti();
+
+            document.getElementById('celebration-screen').classList.add('active');
+
+            // 判断是否是最后一步
+            if (currentStepIndex >= taskPlan.steps.length - 1) {
+                document.querySelector('.continue-btn').textContent = '🎊 完成全部！';
+                document.querySelector('.continue-btn').onclick = finishAllSteps;
+            }
+        }
+
+        // 继续下一步
+        function continueNextStep() {
+            document.getElementById('celebration-screen').classList.remove('active');
+            currentStepIndex++;
+
+            if (currentStepIndex < taskPlan.steps.length) {
+                updateStepDisplay();
+            }
+        }
+
+        // 完成全部步骤
+        function finishAllSteps() {
+            document.getElementById('celebration-screen').classList.remove('active');
+            document.getElementById('execution-screen').classList.remove('active');
+
+            // 添加奖励
+            totalStars += taskPlan.bonusReward;
+            document.getElementById('star-count').textContent = totalStars;
+
+            // 回到对话区，显示完成消息
+            const chatArea = document.getElementById('chat-area');
+            chatArea.innerHTML += `
+                <div class="message partner">
+                    <img src="assets/partner_kuqi.png" alt="酷奇" class="message-avatar">
+                    <div class="message-bubble">
+                        🎊 太厉害了！你完成了「${taskPlan.title}」！<br>
+                        获得了 🌟${taskPlan.steps.reduce((a, s) => a + s.reward, 0) + taskPlan.bonusReward} 星星！<br><br>
+                        想继续挑战其他目标吗？
+                    </div>
+                </div>
+            `;
+
+            // 重新显示快捷标签
+            document.getElementById('quick-tags').classList.remove('hidden');
+
+            scrollToBottom();
+        }
+
+        // 退出执行
+        function exitExecution() {
+            if (confirm('确定要退出吗？当前进度会保存~')) {
+                document.getElementById('execution-screen').classList.remove('active');
+            }
+        }
+
+        // 生成彩纸
+        function spawnConfetti() {
+            const area = document.getElementById('confetti-area');
+            area.innerHTML = '';
+            const emojis = ['🎉', '⭐', '✨', '🌟', '🎊', '💫', '🎈'];
+
+            for (let i = 0; i < 20; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'confetti-piece';
+                piece.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                piece.style.left = Math.random() * 100 + '%';
+                piece.style.animationDelay = Math.random() * 0.5 + 's';
+                piece.style.animationDuration = (2 + Math.random()) + 's';
+                area.appendChild(piece);
+            }
+        }
+
+        // 滚动到底部
+        function scrollToBottom() {
+            const chatArea = document.getElementById('chat-area');
+            setTimeout(() => {
+                chatArea.scrollTop = chatArea.scrollHeight;
+            }, 100);
+        }
+
+        // 回车发送
+        document.getElementById('goal-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') submitGoal();
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>星伴 - 交互稿</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .flow-arrow {
+            position: relative;
+        }
+
+        .flow-arrow::after {
+            content: '→';
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            font-size: 20px;
+        }
+
+        .page-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.15);
+        }
+
+        .interaction-item:hover {
+            background: #f8fafc;
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-br from-slate-50 to-slate-100 min-h-screen">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div
+                    class="w-10 h-10 bg-gradient-to-br from-pink-400 to-orange-400 rounded-xl flex items-center justify-center text-white font-bold text-lg">
+                    ⭐</div>
+                <div>
+                    <h1 class="text-xl font-bold text-slate-800">星伴 Star Companion</h1>
+                    <p class="text-xs text-slate-400">交互稿 v2.0</p>
+                </div>
+            </div>
+            <a href="xingban-v2.html" target="_blank"
+                class="px-4 py-2 bg-gradient-to-r from-pink-500 to-orange-500 text-white rounded-full text-sm font-medium hover:shadow-lg transition">
+                打开原型 →
+            </a>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-6 py-8">
+
+        <!-- Overview Section -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold text-slate-800 mb-4">📱 产品概览</h2>
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+                <p class="text-slate-600 leading-relaxed mb-4">
+                    <strong>星伴</strong>是一款面向 8-12 岁儿童的 AI 智能习惯养成产品。通过 AI 伙伴"酷奇"的陪伴，帮助儿童建立良好的学习和生活习惯。
+                    产品采用游戏化设计，包含虚拟货币、伙伴装扮、亲密度等激励机制。
+                </p>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-pink-50 rounded-xl p-4 text-center">
+                        <div class="text-2xl mb-1">👶</div>
+                        <div class="text-sm font-medium text-slate-700">目标用户</div>
+                        <div class="text-xs text-slate-400">8-12岁儿童</div>
+                    </div>
+                    <div class="bg-orange-50 rounded-xl p-4 text-center">
+                        <div class="text-2xl mb-1">🦁</div>
+                        <div class="text-sm font-medium text-slate-700">AI 伙伴</div>
+                        <div class="text-xs text-slate-400">酷奇</div>
+                    </div>
+                    <div class="bg-blue-50 rounded-xl p-4 text-center">
+                        <div class="text-2xl mb-1">⭐</div>
+                        <div class="text-sm font-medium text-slate-700">虚拟货币</div>
+                        <div class="text-xs text-slate-400">金币系统</div>
+                    </div>
+                    <div class="bg-purple-50 rounded-xl p-4 text-center">
+                        <div class="text-2xl mb-1">👨‍👩‍👧</div>
+                        <div class="text-sm font-medium text-slate-700">家长模块</div>
+                        <div class="text-xs text-slate-400">任务发布 & 监控</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page Structure -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold text-slate-800 mb-4">🗂️ 页面结构</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                <!-- Home Page -->
+                <div
+                    class="page-card bg-white rounded-2xl p-5 shadow-sm border border-slate-100 transition-all duration-300">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div
+                            class="w-12 h-12 bg-gradient-to-br from-pink-100 to-pink-200 rounded-xl flex items-center justify-center text-2xl">
+                            🏠</div>
+                        <div>
+                            <h3 class="font-bold text-slate-800">首页</h3>
+                            <p class="text-xs text-slate-400">Home</p>
+                        </div>
+                    </div>
+                    <ul class="text-sm text-slate-600 space-y-2">
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-pink-400 rounded-full"></span>AI
+                            伙伴展示区</li>
+                        <li class="flex items-center gap-2"><span
+                                class="w-1.5 h-1.5 bg-pink-400 rounded-full"></span>对话气泡</li>
+                        <li class="flex items-center gap-2"><span
+                                class="w-1.5 h-1.5 bg-pink-400 rounded-full"></span>习惯标签 (阅读/运动/家务)</li>
+                        <li class="flex items-center gap-2"><span
+                                class="w-1.5 h-1.5 bg-pink-400 rounded-full"></span>底部导航 (装扮/任务/商城)</li>
+                        <li class="flex items-center gap-2"><span
+                                class="w-1.5 h-1.5 bg-pink-400 rounded-full"></span>语音输入框</li>
+                    </ul>
+                </div>
+
+                <!-- Mall Page -->
+                <div
+                    class="page-card bg-white rounded-2xl p-5 shadow-sm border border-slate-100 transition-all duration-300">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div
+                            class="w-12 h-12 bg-gradient-to-br from-orange-100 to-orange-200 rounded-xl flex items-center justify-center text-2xl">
+                            🛍️</div>
+                        <div>
+                            <h3 class="font-bold text-slate-800">商城</h3>
+                            <p class="text-xs text-slate-400">Mall</p>
+                        </div>
+                    </div>
+                    <ul class="text-sm text-slate-600 space-y-2">
+                        <li class="flex items-center gap-2"><span
+                                class="w-1.5 h-1.5 bg-orange-400 rounded-full"></span>一级分类: 形象 / 装扮 / 动作</li>
+                        <li class="flex items-center gap-2"><span
+                                class="w-1.5 h-1.5 bg-orange-400 rounded-full"></span>二级分类: 推荐 / 最新 / 典藏等</li>
+                        <li class="flex items-center gap-2"><span
+                                class="w-1.5 h-1.5 bg-orange-400 rounded-full"></span>商品网格 (4列)</li>
+                        <li class="flex items-center gap-2"><span
+                                class="w-1.5 h-1.5 bg-orange-400 rounded-full"></span>预览区 + 兑换按钮</li>
+                        <li class="flex items-center gap-2"><span
+                                class="w-1.5 h-1.5 bg-orange-400 rounded-full"></span>购买确认/成功弹窗</li>
+                    </ul>
+                </div>
+
+                <!-- Dress Page -->
+                <div
+                    class="page-card bg-white rounded-2xl p-5 shadow-sm border border-slate-100 transition-all duration-300">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div
+                            class="w-12 h-12 bg-gradient-to-br from-purple-100 to-purple-200 rounded-xl flex items-center justify-center text-2xl">
+                            👗</div>
+                        <div>
+                            <h3 class="font-bold text-slate-800">装扮管理</h3>
+                            <p class="text-xs text-slate-400">Dress Up / 精灵形象</p>
+                        </div>
+                    </div>
+                    <ul class="text-sm text-slate-600 space-y-2">
+                        <li class="flex items-center gap-2"><span
+                                class="w-1.5 h-1.5 bg-purple-400 rounded-full"></span>一级分类: 形象 / 装扮 / 动作</li>
+                        <li class="flex items-center gap-2"><span
+                                class="w-1.5 h-1.5 bg-purple-400 rounded-full"></span>我的 / 历史形象</li>
+                        <li class="flex items-center gap-2"><span
+                                class="w-1.5 h-1.5 bg-purple-400 rounded-full"></span>使用中标签 + 剩余天数</li>
+                        <li class="flex items-center gap-2"><span
+                                class="w-1.5 h-1.5 bg-purple-400 rounded-full"></span>使用 / 续期按钮</li>
+                        <li class="flex items-center gap-2"><span
+                                class="w-1.5 h-1.5 bg-purple-400 rounded-full"></span>更多形象入口 → 商城</li>
+                    </ul>
+                </div>
+
+                <!-- Tasks Page -->
+                <div
+                    class="page-card bg-white rounded-2xl p-5 shadow-sm border border-slate-100 transition-all duration-300">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div
+                            class="w-12 h-12 bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl flex items-center justify-center text-2xl">
+                            ✅</div>
+                        <div>
+                            <h3 class="font-bold text-slate-800">任务</h3>
+                            <p class="text-xs text-slate-400">Tasks</p>
+                        </div>
+                    </div>
+                    <ul class="text-sm text-slate-600 space-y-2">
+                        <li class="flex items-center gap-2"><span
+                                class="w-1.5 h-1.5 bg-blue-400 rounded-full"></span>今日任务列表</li>
+                        <li class="flex items-center gap-2"><span
+                                class="w-1.5 h-1.5 bg-blue-400 rounded-full"></span>任务完成打卡</li>
+                        <li class="flex items-center gap-2"><span
+                                class="w-1.5 h-1.5 bg-blue-400 rounded-full"></span>金币奖励展示</li>
+                        <li class="flex items-center gap-2"><span
+                                class="w-1.5 h-1.5 bg-blue-400 rounded-full"></span>任务分类 (阅读/运动/家务)</li>
+                    </ul>
+                </div>
+
+                <!-- Parent Page -->
+                <div
+                    class="page-card bg-white rounded-2xl p-5 shadow-sm border border-slate-100 transition-all duration-300">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div
+                            class="w-12 h-12 bg-gradient-to-br from-green-100 to-green-200 rounded-xl flex items-center justify-center text-2xl">
+                            👨‍👩‍👧</div>
+                        <div>
+                            <h3 class="font-bold text-slate-800">家长中心</h3>
+                            <p class="text-xs text-slate-400">Parent Center</p>
+                        </div>
+                    </div>
+                    <ul class="text-sm text-slate-600 space-y-2">
+                        <li class="flex items-center gap-2"><span
+                                class="w-1.5 h-1.5 bg-green-400 rounded-full"></span>任务发布</li>
+                        <li class="flex items-center gap-2"><span
+                                class="w-1.5 h-1.5 bg-green-400 rounded-full"></span>完成情况监控</li>
+                        <li class="flex items-center gap-2"><span
+                                class="w-1.5 h-1.5 bg-green-400 rounded-full"></span>心愿清单管理</li>
+                        <li class="flex items-center gap-2"><span
+                                class="w-1.5 h-1.5 bg-green-400 rounded-full"></span>奖励兑换</li>
+                    </ul>
+                </div>
+
+                <!-- Chat/AI Page -->
+                <div
+                    class="page-card bg-white rounded-2xl p-5 shadow-sm border border-slate-100 transition-all duration-300">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div
+                            class="w-12 h-12 bg-gradient-to-br from-cyan-100 to-cyan-200 rounded-xl flex items-center justify-center text-2xl">
+                            💬</div>
+                        <div>
+                            <h3 class="font-bold text-slate-800">AI 对话</h3>
+                            <p class="text-xs text-slate-400">Chat with 酷奇</p>
+                        </div>
+                    </div>
+                    <ul class="text-sm text-slate-600 space-y-2">
+                        <li class="flex items-center gap-2"><span
+                                class="w-1.5 h-1.5 bg-cyan-400 rounded-full"></span>语音/文字输入</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-cyan-400 rounded-full"></span>AI
+                            任务规划</li>
+                        <li class="flex items-center gap-2"><span
+                                class="w-1.5 h-1.5 bg-cyan-400 rounded-full"></span>目标分解建议</li>
+                        <li class="flex items-center gap-2"><span
+                                class="w-1.5 h-1.5 bg-cyan-400 rounded-full"></span>鼓励与反馈</li>
+                    </ul>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Interaction Flows -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold text-slate-800 mb-4">🔄 核心交互流程</h2>
+
+            <!-- Flow 1: Purchase Flow -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 mb-6">
+                <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
+                    <span class="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center text-sm">1</span>
+                    商城购买流程
+                </h3>
+                <div class="flex flex-wrap items-center gap-4 text-sm">
+                    <div class="bg-slate-50 px-4 py-2 rounded-lg flow-arrow">首页点击"商城"</div>
+                    <div class="bg-slate-50 px-4 py-2 rounded-lg flow-arrow">选择分类 Tab</div>
+                    <div class="bg-slate-50 px-4 py-2 rounded-lg flow-arrow">点击商品</div>
+                    <div class="bg-slate-50 px-4 py-2 rounded-lg flow-arrow">预览区更新</div>
+                    <div class="bg-slate-50 px-4 py-2 rounded-lg flow-arrow">点击"兑换"</div>
+                    <div class="bg-slate-50 px-4 py-2 rounded-lg flow-arrow">确认弹窗</div>
+                    <div class="bg-slate-50 px-4 py-2 rounded-lg flow-arrow">扣除金币</div>
+                    <div class="bg-orange-100 text-orange-700 px-4 py-2 rounded-lg font-medium">成功 → 去使用</div>
+                </div>
+            </div>
+
+            <!-- Flow 2: Dress Up Flow -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 mb-6">
+                <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
+                    <span class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center text-sm">2</span>
+                    装扮使用流程
+                </h3>
+                <div class="flex flex-wrap items-center gap-4 text-sm">
+                    <div class="bg-slate-50 px-4 py-2 rounded-lg flow-arrow">首页点击"装扮"</div>
+                    <div class="bg-slate-50 px-4 py-2 rounded-lg flow-arrow">选择分类</div>
+                    <div class="bg-slate-50 px-4 py-2 rounded-lg flow-arrow">选择已拥有物品</div>
+                    <div class="bg-slate-50 px-4 py-2 rounded-lg flow-arrow">点击"使用"</div>
+                    <div class="bg-purple-100 text-purple-700 px-4 py-2 rounded-lg font-medium">装备成功</div>
+                </div>
+                <div class="mt-4 flex flex-wrap items-center gap-4 text-sm">
+                    <div class="bg-slate-50 px-4 py-2 rounded-lg flow-arrow">选择使用中物品</div>
+                    <div class="bg-slate-50 px-4 py-2 rounded-lg flow-arrow">点击"续期"</div>
+                    <div class="bg-purple-100 text-purple-700 px-4 py-2 rounded-lg font-medium">续期弹窗</div>
+                </div>
+            </div>
+
+            <!-- Flow 3: Task Flow -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 mb-6">
+                <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
+                    <span class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center text-sm">3</span>
+                    任务完成流程
+                </h3>
+                <div class="flex flex-wrap items-center gap-4 text-sm">
+                    <div class="bg-slate-50 px-4 py-2 rounded-lg flow-arrow">首页点击"任务"</div>
+                    <div class="bg-slate-50 px-4 py-2 rounded-lg flow-arrow">查看今日任务</div>
+                    <div class="bg-slate-50 px-4 py-2 rounded-lg flow-arrow">点击任务打卡</div>
+                    <div class="bg-slate-50 px-4 py-2 rounded-lg flow-arrow">确认完成</div>
+                    <div class="bg-blue-100 text-blue-700 px-4 py-2 rounded-lg font-medium">获得金币奖励</div>
+                </div>
+            </div>
+
+            <!-- Flow 4: AI Chat Flow -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+                <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
+                    <span class="w-8 h-8 bg-cyan-100 rounded-lg flex items-center justify-center text-sm">4</span>
+                    AI 对话流程
+                </h3>
+                <div class="flex flex-wrap items-center gap-4 text-sm">
+                    <div class="bg-slate-50 px-4 py-2 rounded-lg flow-arrow">点击输入框</div>
+                    <div class="bg-slate-50 px-4 py-2 rounded-lg flow-arrow">输入目标/想法</div>
+                    <div class="bg-slate-50 px-4 py-2 rounded-lg flow-arrow">AI 分析</div>
+                    <div class="bg-slate-50 px-4 py-2 rounded-lg flow-arrow">生成任务建议</div>
+                    <div class="bg-cyan-100 text-cyan-700 px-4 py-2 rounded-lg font-medium">确认添加任务</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Component States -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold text-slate-800 mb-4">🎨 组件状态说明</h2>
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                    <!-- Tab States -->
+                    <div>
+                        <h4 class="font-semibold text-slate-700 mb-3">Tab 切换状态</h4>
+                        <div class="space-y-2">
+                            <div
+                                class="interaction-item flex items-center justify-between p-3 rounded-lg border border-slate-100">
+                                <span class="text-sm text-slate-600">激活状态</span>
+                                <span class="px-3 py-1 bg-slate-800 text-white text-xs rounded-full">形象</span>
+                            </div>
+                            <div
+                                class="interaction-item flex items-center justify-between p-3 rounded-lg border border-slate-100">
+                                <span class="text-sm text-slate-600">未激活状态</span>
+                                <span class="px-3 py-1 bg-white text-slate-400 text-xs rounded-full border">装扮</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Button States -->
+                    <div>
+                        <h4 class="font-semibold text-slate-700 mb-3">按钮状态</h4>
+                        <div class="space-y-2">
+                            <div
+                                class="interaction-item flex items-center justify-between p-3 rounded-lg border border-slate-100">
+                                <span class="text-sm text-slate-600">主操作</span>
+                                <button
+                                    class="px-4 py-1.5 bg-gradient-to-r from-orange-400 to-orange-500 text-white text-xs rounded-full font-medium">兑换</button>
+                            </div>
+                            <div
+                                class="interaction-item flex items-center justify-between p-3 rounded-lg border border-slate-100">
+                                <span class="text-sm text-slate-600">次级操作</span>
+                                <button
+                                    class="px-4 py-1.5 bg-white text-slate-600 text-xs rounded-full border border-slate-200">使用</button>
+                            </div>
+                            <div
+                                class="interaction-item flex items-center justify-between p-3 rounded-lg border border-slate-100">
+                                <span class="text-sm text-slate-600">禁用状态</span>
+                                <button
+                                    class="px-4 py-1.5 bg-gray-200 text-gray-400 text-xs rounded-full cursor-not-allowed">使用</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item States -->
+                    <div>
+                        <h4 class="font-semibold text-slate-700 mb-3">商品卡片状态</h4>
+                        <div class="space-y-2">
+                            <div
+                                class="interaction-item flex items-center justify-between p-3 rounded-lg border border-slate-100">
+                                <span class="text-sm text-slate-600">未拥有</span>
+                                <span class="text-xs text-yellow-500 font-semibold">⭐ 20</span>
+                            </div>
+                            <div
+                                class="interaction-item flex items-center justify-between p-3 rounded-lg border border-slate-100">
+                                <span class="text-sm text-slate-600">已拥有</span>
+                                <span class="text-xs text-slate-400">已拥有</span>
+                            </div>
+                            <div
+                                class="interaction-item flex items-center justify-between p-3 rounded-lg border border-slate-100">
+                                <span class="text-sm text-slate-600">使用中</span>
+                                <span class="text-xs bg-orange-500 text-white px-2 py-0.5 rounded-full">使用中</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Validity States -->
+                    <div>
+                        <h4 class="font-semibold text-slate-700 mb-3">有效期状态</h4>
+                        <div class="space-y-2">
+                            <div
+                                class="interaction-item flex items-center justify-between p-3 rounded-lg border border-slate-100">
+                                <span class="text-sm text-slate-600">永久</span>
+                                <span class="text-xs text-slate-400">永久</span>
+                            </div>
+                            <div
+                                class="interaction-item flex items-center justify-between p-3 rounded-lg border border-slate-100">
+                                <span class="text-sm text-slate-600">限时</span>
+                                <span class="text-xs text-slate-400">剩余 30 天</span>
+                            </div>
+                            <div
+                                class="interaction-item flex items-center justify-between p-3 rounded-lg border border-slate-100">
+                                <span class="text-sm text-slate-600">已过期</span>
+                                <span class="text-xs text-red-400">已过期</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Navigation Map -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold text-slate-800 mb-4">🗺️ 页面导航地图</h2>
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-slate-100">
+                                <th class="text-left py-3 px-4 font-semibold text-slate-700">入口位置</th>
+                                <th class="text-left py-3 px-4 font-semibold text-slate-700">点击元素</th>
+                                <th class="text-left py-3 px-4 font-semibold text-slate-700">目标页面</th>
+                                <th class="text-left py-3 px-4 font-semibold text-slate-700">说明</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-slate-600">
+                            <tr class="border-b border-slate-50">
+                                <td class="py-3 px-4">首页</td>
+                                <td class="py-3 px-4">左上角头像</td>
+                                <td class="py-3 px-4">个人中心</td>
+                                <td class="py-3 px-4">查看个人信息</td>
+                            </tr>
+                            <tr class="border-b border-slate-50">
+                                <td class="py-3 px-4">首页</td>
+                                <td class="py-3 px-4">右上角"家长中心"</td>
+                                <td class="py-3 px-4">家长中心</td>
+                                <td class="py-3 px-4">家长任务发布与监控</td>
+                            </tr>
+                            <tr class="border-b border-slate-50">
+                                <td class="py-3 px-4">首页</td>
+                                <td class="py-3 px-4">底部"装扮"</td>
+                                <td class="py-3 px-4">装扮管理 (精灵形象)</td>
+                                <td class="py-3 px-4">管理已拥有的装扮</td>
+                            </tr>
+                            <tr class="border-b border-slate-50">
+                                <td class="py-3 px-4">首页</td>
+                                <td class="py-3 px-4">底部"任务"</td>
+                                <td class="py-3 px-4">任务列表</td>
+                                <td class="py-3 px-4">查看和完成今日任务</td>
+                            </tr>
+                            <tr class="border-b border-slate-50">
+                                <td class="py-3 px-4">首页</td>
+                                <td class="py-3 px-4">底部"商城"</td>
+                                <td class="py-3 px-4">商城</td>
+                                <td class="py-3 px-4">购买形象/装扮/动作</td>
+                            </tr>
+                            <tr class="border-b border-slate-50">
+                                <td class="py-3 px-4">首页</td>
+                                <td class="py-3 px-4">输入框</td>
+                                <td class="py-3 px-4">AI 对话</td>
+                                <td class="py-3 px-4">与酷奇对话，规划任务</td>
+                            </tr>
+                            <tr class="border-b border-slate-50">
+                                <td class="py-3 px-4">商城</td>
+                                <td class="py-3 px-4">购买成功 → "去使用"</td>
+                                <td class="py-3 px-4">装扮管理</td>
+                                <td class="py-3 px-4">跳转使用新购物品</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 px-4">装扮管理</td>
+                                <td class="py-3 px-4">"更多形象"入口</td>
+                                <td class="py-3 px-4">商城</td>
+                                <td class="py-3 px-4">跳转购买更多</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Data Model -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold text-slate-800 mb-4">📊 数据模型</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+                    <h4 class="font-semibold text-slate-700 mb-3">商品数据结构</h4>
+                    <pre class="bg-slate-50 p-4 rounded-lg text-xs overflow-x-auto"><code>{
+  id: 'a1',
+  img: '🐱',
+  name: '小喵布布',
+  price: 20,
+  owned: false,
+  daysLeft: 30,  // -1 = 永久
+  inUse: false,
+  category: 'head', // 装扮分类
+  tier: 'normal'   // 动作级别
+}</code></pre>
+                </div>
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+                    <h4 class="font-semibold text-slate-700 mb-3">用户状态</h4>
+                    <pre class="bg-slate-50 p-4 rounded-lg text-xs overflow-x-auto"><code>{
+  name: '小明',
+  coins: 176,      // 金币余额
+  sparks: 47,      // 火花数
+  intimacy: 850,   // 亲密度
+  partnerLevel: 12 // 伙伴等级
+}</code></pre>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-100 py-6">
+        <div class="max-w-6xl mx-auto px-6 text-center text-sm text-slate-400">
+            <p>星伴 Star Companion · 交互稿 v2.0</p>
+            <p class="mt-1">基于 PRD V2.0 设计</p>
+        </div>
+    </footer>
+
+</body>
+
+</html>

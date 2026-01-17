@@ -1,0 +1,1759 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>星伴 Star Companion V2.0</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            purple: '#7c3aed',
+                            pink: '#ec4899',
+                            blue: '#3b82f6',
+                            dark: '#0f172a'
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pop-in': 'popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
+                        'slide-up': 'slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'fade-in': 'fadeIn 0.3s ease-out forwards'
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        popIn: {
+                            '0%': { opacity: '0', transform: 'scale(0.8)' },
+                            '100%': { opacity: '1', transform: 'scale(1)' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(100%)' },
+                            '100%': { transform: 'translateY(0)' },
+                        },
+                        fadeIn: {
+                            'from': { opacity: '0' },
+                            'to': { opacity: '1' }
+                        },
+                        bounceIn: {
+                            '0%': { transform: 'scale(0.3)', opacity: '0' },
+                            '50%': { transform: 'scale(1.05)' },
+                            '70%': { transform: 'scale(0.9)' },
+                            '100%': { transform: 'scale(1)', opacity: '1' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap');
+
+        body {
+            font-family: 'Outfit', 'Noto Sans SC', sans-serif;
+            background-color: #0f172a;
+            color: white;
+            overflow: hidden;
+            /* Prevent body scroll, manage in containers */
+        }
+
+        /* Glassmorphism Utilities */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .glass-input {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        /* Character Placeholder Gradient */
+        .character-glow {
+            background: radial-gradient(circle, rgba(124, 58, 237, 0.4) 0%, rgba(15, 23, 42, 0) 70%);
+        }
+
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+
+<body
+    class="min-h-screen w-full overflow-hidden font-outfit select-none text-slate-800 bg-gradient-to-b from-rose-50 to-pink-100 transition-all duration-1000 bg-fixed">
+    <!-- Gradient Overlay for better text readability at top/bottom -->
+    <div class="absolute inset-0 bg-white/20 pointer-events-none"></div>
+
+    <div id="app"
+        class="relative w-full max-w-[390px] h-[calc(100vh-40px)] max-h-[844px] flex flex-col mx-auto my-5 shadow-2xl overflow-hidden rounded-[40px] border border-gray-200/50 bg-white/30 backdrop-blur-sm">
+
+        <!-- 1. HOME HEADER -->
+        <div class="absolute top-0 w-full z-20 p-4 pt-10 flex justify-between items-center">
+            <!-- User Profile Widget (儿童用户入口 - No Level) -->
+            <div class="bg-white/70 backdrop-blur-md rounded-full p-1.5 pr-4 flex items-center gap-2 cursor-pointer hover:bg-white/90 transition shadow-sm"
+                onclick="openPage('profile')">
+                <!-- Avatar -->
+                <div class="w-9 h-9 rounded-full bg-gradient-to-br from-pink-400 to-orange-300 p-0.5 shadow-sm">
+                    <div class="w-full h-full rounded-full bg-white flex items-center justify-center overflow-hidden">
+                        <span class="text-sm font-bold text-pink-500">小明</span>
+                    </div>
+                </div>
+                <!-- Spark Count -->
+                <div class="flex items-center gap-1">
+                    <span class="text-base">🔥</span>
+                    <span class="text-sm font-bold text-orange-500">47</span>
+                </div>
+            </div>
+
+            <!-- Parent Center Entry (家长中心) -->
+            <button onclick="openPage('parent')"
+                class="flex items-center gap-1.5 bg-white/70 backdrop-blur-md rounded-full px-3 py-1.5 hover:bg-white/90 active:scale-95 transition shadow-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-pink-500" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+                <span class="text-xs font-medium text-slate-600">家长中心</span>
+            </button>
+        </div>
+
+        <!-- CENTER STAGE (Interaction Area) -->
+        <main class="flex-1 flex flex-col items-center justify-center relative pb-32">
+
+            <!-- Dialogue Bubble -->
+            <div id="home-bubble"
+                class="mb-4 px-6 py-3 glass-panel rounded-2xl rounded-bl-sm animate-pop-in max-w-[80%]">
+                <p class="text-sm md:text-base font-medium typing-effect">今天想完成什么目标呀？🌟</p>
+            </div>
+
+            <!-- 3D Character (CSS Representation / Placeholder) -->
+            <div class="relative w-64 h-64 animate-float cursor-pointer" onclick="pokeCharacter()">
+                <div class="absolute inset-0 character-glow blur-2xl"></div>
+                <!-- 狮子/Lion Character Placeholder -->
+                <div class="w-64 h-64 relative flex items-center justify-center">
+                    <img src="assets/partner_kuqi_v3.png"
+                        class="w-full h-full object-contain filter drop-shadow-[0_0_30px_rgba(124,58,237,0.4)] hover:scale-105 transition duration-500"
+                        alt="Kuqi">
+                </div>
+            </div>
+
+            <!-- Intimacy Level Indicator -->
+            <div class="mt-2 mb-4 flex flex-col items-center justify-center animate-fade-in-up"
+                onclick="openPage('profile')">
+                <div class="text-slate-800 font-bold text-lg mb-1 drop-shadow-sm">酷奇</div>
+                <div
+                    class="relative w-40 h-6 bg-white/60 backdrop-blur-sm border border-gray-200 rounded-full flex items-center p-0.5 shadow-inner">
+                    <!-- Level Badge -->
+                    <div
+                        class="h-full bg-gradient-to-r from-orange-400 to-pink-500 rounded-full px-2 flex items-center gap-1 shadow-sm z-10">
+                        <span class="text-[8px]">❤️</span>
+                        <span class="text-[9px] font-bold text-white leading-none">12级</span>
+                    </div>
+                    <!-- ProgressBar Fill -->
+                    <div class="absolute top-1 bottom-1 left-1 bg-pink-100 rounded-r-full" style="width: 70%"></div>
+                    <!-- Text Value -->
+                    <div class="absolute inset-0 flex items-center justify-end pr-3 z-10">
+                        <span class="text-[9px] font-mono text-slate-600">850/1200</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Action Tags -->
+            <div class="flex gap-2 mt-6">
+                <button onclick="startTaskFlow('我要阅读')"
+                    class="px-4 py-2 bg-white/70 backdrop-blur-sm rounded-full text-sm font-medium text-slate-700 hover:bg-white hover:shadow-md transition active:scale-95 flex items-center gap-1.5 border border-white/50">
+                    <span class="text-base">📖</span> 阅读
+                </button>
+                <button onclick="startTaskFlow('我要运动')"
+                    class="px-4 py-2 bg-white/70 backdrop-blur-sm rounded-full text-sm font-medium text-slate-700 hover:bg-white hover:shadow-md transition active:scale-95 flex items-center gap-1.5 border border-white/50">
+                    <span class="text-base">🏃</span> 运动
+                </button>
+                <button onclick="startTaskFlow('我要做家务')"
+                    class="px-4 py-2 bg-white/70 backdrop-blur-sm rounded-full text-sm font-medium text-slate-700 hover:bg-white hover:shadow-md transition active:scale-95 flex items-center gap-1.5 border border-white/50">
+                    <span class="text-base">🧹</span> 家务
+                </button>
+            </div>
+
+        </main>
+
+        <!-- BOTTOM CONTROLS (Floating) -->
+        <div class="absolute bottom-0 left-0 w-full p-6 pt-0 bg-gradient-to-t from-white via-white/80 to-transparent">
+
+            <!-- Floating Entry Buttons -->
+            <div class="flex justify-center gap-8 mb-6">
+                <!-- Dress Up -->
+                <div onclick="openPage('dress')" class="flex flex-col items-center gap-1 cursor-pointer group">
+                    <div
+                        class="w-12 h-12 rounded-2xl bg-white/70 border border-gray-200 flex items-center justify-center group-hover:bg-purple-100 transition shadow-md">
+                        <span class="text-2xl">👕</span>
+                    </div>
+                    <span class="text-[10px] text-slate-600 font-medium tracking-wide">装扮</span>
+                </div>
+
+                <!-- Tasks (Center Huge) -->
+                <div onclick="openPage('tasks')" class="flex flex-col items-center gap-1 cursor-pointer group -mt-4">
+                    <div
+                        class="w-16 h-16 rounded-[20px] bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-xl shadow-blue-500/30 group-hover:scale-105 transition transform relative overflow-hidden">
+                        <div
+                            class="absolute inset-0 bg-white/20 skew-x-12 -translate-x-full group-hover:animate-shimmer">
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                        </svg>
+                    </div>
+                    <span class="text-xs text-slate-700 font-semibold tracking-wide">任务</span>
+                </div>
+
+                <!-- Mall -->
+                <div onclick="openPage('mall')" class="flex flex-col items-center gap-1 cursor-pointer group">
+                    <div
+                        class="w-12 h-12 rounded-2xl bg-white/70 border border-gray-200 flex items-center justify-center group-hover:bg-pink-100 transition shadow-md">
+                        <span class="text-2xl">🛍️</span>
+                    </div>
+                    <span class="text-[10px] text-slate-600 font-medium tracking-wide">商城</span>
+                </div>
+            </div>
+
+            <!-- 3. BOTTOM INPUT -->
+            <div class="mt-2">
+                <div class="flex items-center">
+                    <div
+                        class="flex-1 bg-white rounded-full flex items-center p-1 pl-4 border border-gray-200 shadow-sm transition-all focus-within:ring-2 focus-within:ring-pink-300 focus-within:border-pink-300">
+                        <input type="text" placeholder="输入你想做的事..."
+                            class="bg-transparent border-none outline-none text-slate-700 placeholder-slate-400 flex-1 h-10 w-full text-sm"
+                            onkeypress="if(event.key === 'Enter') handleQuickInput(this.value)">
+                        <button
+                            class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-slate-100 transition text-slate-500 hover:text-slate-700">
+                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== OVERLAYS (FULL SCREEN PAGES) ===== -->
+        <!-- 1. MALL OVERLAY (Per Reference Design) -->
+        <div id="page-mall"
+            class="absolute inset-0 z-50 bg-gradient-to-b from-pink-100 to-pink-50 hidden flex-col rounded-[40px] overflow-hidden">
+
+            <!-- Header -->
+            <div class="p-4 pt-10 flex items-center justify-between z-20">
+                <button onclick="closePage('mall')"
+                    class="w-9 h-9 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center shadow-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-slate-600" viewBox="0 0 20 20"
+                        fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                            clip-rule="evenodd" />
+                    </svg>
+                </button>
+                <span class="text-lg font-bold text-slate-800">商城</span>
+                <div class="w-9 h-9"></div> <!-- Spacer for centering -->
+            </div>
+
+
+            <!-- Preview Area -->
+            <div class="flex-shrink-0 h-[38%] relative flex flex-col items-center justify-center">
+                <div id="mall-preview-character" class="w-44 h-44 animate-float">
+                    <img src="assets/partner_kuqi_v3.png" class="w-full h-full object-contain filter drop-shadow-2xl"
+                        alt="Preview">
+                </div>
+                <!-- Status Text -->
+                <div id="mall-status-text" class="text-slate-500 text-sm mt-2">已拥有，剩余有效期 30 天</div>
+                <!-- Action Button -->
+                <button id="mall-action-btn" onclick="handleMallAction()"
+                    class="mt-3 px-8 py-2.5 bg-gradient-to-r from-orange-400 to-orange-500 text-white font-bold rounded-full shadow-lg shadow-orange-300/50 active:scale-95 transition">
+                    去使用
+                </button>
+            </div>
+
+            <!-- Bottom Panel -->
+            <div class="flex-1 bg-white rounded-t-[32px] -mt-2 relative z-10 overflow-hidden flex flex-col">
+
+                <!-- Primary Tabs Row (形象/装扮/动作 + Coins) -->
+                <div class="flex items-center px-4 py-3 border-b border-gray-100">
+                    <div class="flex gap-6">
+                        <button onclick="switchMallCategory('avatar')"
+                            class="mall-primary-tab text-sm font-semibold text-slate-800 border-b-2 border-slate-800 pb-1"
+                            data-category="avatar">形象</button>
+                        <button onclick="switchMallCategory('decoration')"
+                            class="mall-primary-tab text-sm font-medium text-slate-400 pb-1"
+                            data-category="decoration">装扮</button>
+                        <button onclick="switchMallCategory('action')"
+                            class="mall-primary-tab text-sm font-medium text-slate-400 pb-1"
+                            data-category="action">动作</button>
+                    </div>
+                    <div class="ml-auto flex items-center gap-1 text-yellow-500 font-bold text-sm">
+                        <span>⭐</span><span id="user-coins">176</span>
+                    </div>
+                </div>
+
+                <!-- Secondary Tabs Row -->
+                <div class="flex items-center gap-2 px-4 py-2 border-b border-gray-50">
+                    <div id="mall-secondary-tabs" class="flex gap-1 flex-1 overflow-x-auto scrollbar-hide">
+                        <!-- Populated by JS -->
+                    </div>
+                    <button class="w-8 h-8 flex items-center justify-center text-slate-400 hover:text-slate-600">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Grid (4 columns) -->
+                <div id="mall-grid" class="flex-1 overflow-y-auto grid grid-cols-4 gap-2 p-4 pb-8 scrollbar-hide">
+                    <!-- Items will be generated by JS -->
+                </div>
+            </div>
+
+            <!-- Purchase Confirm Modal -->
+            <div id="purchase-confirm-modal"
+                class="absolute inset-0 z-[100] bg-black/50 backdrop-blur-sm hidden items-center justify-center">
+                <div class="bg-white rounded-3xl p-6 mx-6 shadow-2xl w-full max-w-[300px]">
+                    <div class="text-center">
+                        <div id="confirm-emoji" class="text-5xl mb-3">👑</div>
+                        <h3 id="confirm-name" class="text-lg font-bold text-slate-800 mb-1">星光冠</h3>
+                        <p class="text-slate-500 text-sm mb-4">确定要兑换这个装饰吗？</p>
+                        <div class="flex items-center justify-center gap-2 bg-yellow-50 rounded-xl py-3 mb-4">
+                            <span class="text-xl">⭐</span>
+                            <span id="confirm-price" class="text-xl font-bold text-yellow-600">120</span>
+                            <span class="text-slate-400 text-sm">金币</span>
+                        </div>
+                        <div class="flex gap-3">
+                            <button onclick="hidePurchaseConfirm()"
+                                class="flex-1 py-2.5 rounded-xl bg-slate-100 text-slate-600 font-medium hover:bg-slate-200 transition">取消</button>
+                            <button onclick="confirmPurchase()"
+                                class="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-orange-400 to-orange-500 text-white font-bold active:scale-95 transition">确认</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Purchase Success Modal -->
+            <div id="purchase-success-modal"
+                class="absolute inset-0 z-[100] bg-black/50 backdrop-blur-sm hidden items-center justify-center">
+                <div class="bg-white rounded-3xl p-6 mx-6 shadow-2xl w-full max-w-[300px] text-center">
+                    <div class="text-5xl mb-2">🎉</div>
+                    <h3 class="text-lg font-bold text-slate-800 mb-1">兑换成功！</h3>
+                    <div
+                        class="bg-gradient-to-br from-pink-50 to-orange-50 rounded-2xl p-4 my-4 border border-pink-100">
+                        <div id="success-emoji" class="text-4xl mb-2">👑</div>
+                        <div id="success-name" class="font-bold text-slate-800">星光冠</div>
+                        <div class="text-xs text-slate-400 mt-1">有效期 30 天</div>
+                    </div>
+                    <button onclick="goToUse()"
+                        class="w-full py-3 rounded-xl bg-gradient-to-r from-orange-400 to-orange-500 text-white font-bold">去使用</button>
+                    <button onclick="closeSuccessModal()" class="w-full mt-2 py-2 text-slate-400 text-sm">继续逛逛</button>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- 2. TASKS OVERLAY -->
+        <div id="page-tasks" class="absolute inset-0 z-50 bg-slate-50 hidden flex-col rounded-[40px] overflow-hidden">
+
+            <!-- Header -->
+            <div
+                class="p-4 pt-10 flex items-center justify-between bg-white/90 backdrop-blur-md border-b border-gray-100">
+                <button onclick="closePage('tasks')"
+                    class="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center active:scale-95 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-slate-600" viewBox="0 0 20 20"
+                        fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                            clip-rule="evenodd" />
+                    </svg>
+                </button>
+                <span class="text-lg font-bold text-slate-800">任务中心</span>
+                <div class="w-9 h-9"></div>
+            </div>
+
+            <!-- Tab Bar -->
+            <div class="flex bg-white border-b border-gray-100 px-4">
+                <button onclick="switchTaskTab('today')"
+                    class="task-tab flex-1 py-3 text-sm font-semibold text-blue-600 border-b-2 border-blue-600"
+                    data-tab="today">
+                    今日
+                    <span id="today-count"
+                        class="ml-1 px-1.5 py-0.5 bg-blue-100 text-blue-600 text-xs rounded-full">5</span>
+                </button>
+                <button onclick="switchTaskTab('plan')"
+                    class="task-tab flex-1 py-3 text-sm font-medium text-slate-400 border-b-2 border-transparent"
+                    data-tab="plan">
+                    计划
+                </button>
+                <button onclick="switchTaskTab('history')"
+                    class="task-tab flex-1 py-3 text-sm font-medium text-slate-400 border-b-2 border-transparent"
+                    data-tab="history">
+                    成就
+                </button>
+            </div>
+
+            <!-- Tab Content: Today -->
+            <div id="task-tab-today" class="task-tab-content flex-1 overflow-y-auto p-4 space-y-4">
+
+                <!-- In Progress Section -->
+                <div class="mb-2">
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+                        <span class="text-sm font-semibold text-slate-700">进行中</span>
+                    </div>
+
+                    <!-- Active Task Card -->
+                    <div class="bg-white p-4 rounded-2xl border-l-4 border-l-blue-500 shadow-sm border border-gray-100">
+                        <div class="flex justify-between items-start mb-2">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xl">📚</span>
+                                <span class="font-bold text-slate-800">阅读《西游记》</span>
+                            </div>
+                            <span class="text-yellow-500 font-bold text-sm">⭐20</span>
+                        </div>
+                        <div class="text-xs text-slate-400 mb-3">目标30分钟 · 已进行15分钟</div>
+                        <div class="w-full bg-gray-100 h-2 rounded-full mb-3">
+                            <div
+                                class="w-[50%] h-full bg-gradient-to-r from-blue-400 to-blue-600 rounded-full transition-all">
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="pauseTask()"
+                                class="flex-1 py-2 bg-slate-100 text-slate-600 rounded-xl text-sm font-medium hover:bg-slate-200 transition">暂停</button>
+                            <button onclick="completeTask('t1')"
+                                class="flex-1 py-2 bg-blue-600 text-white rounded-xl text-sm font-medium shadow-lg shadow-blue-500/30 active:scale-95 transition">完成打卡</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pending Section -->
+                <div>
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="w-2 h-2 bg-orange-400 rounded-full"></span>
+                        <span class="text-sm font-semibold text-slate-700">待完成</span>
+                        <span class="text-xs text-slate-400">(4)</span>
+                    </div>
+
+                    <!-- Pending Task Items -->
+                    <div class="space-y-2">
+                        <div class="bg-white p-4 rounded-2xl flex items-center gap-3 shadow-sm border border-gray-100">
+                            <div class="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center text-xl">🏃
+                            </div>
+                            <div class="flex-1">
+                                <div class="font-medium text-slate-800">运动30分钟</div>
+                                <div class="text-xs text-slate-400">今日 18:00 前</div>
+                            </div>
+                            <span class="text-yellow-500 font-bold text-sm">⭐15</span>
+                            <button onclick="startTask('t2')"
+                                class="px-3 py-1.5 bg-blue-50 text-blue-600 rounded-lg text-xs font-medium hover:bg-blue-100 transition">开始</button>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-2xl flex items-center gap-3 shadow-sm border border-gray-100">
+                            <div class="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center text-xl">🧹
+                            </div>
+                            <div class="flex-1">
+                                <div class="font-medium text-slate-800">整理房间</div>
+                                <div class="text-xs text-slate-400">今日 20:00 前</div>
+                            </div>
+                            <span class="text-yellow-500 font-bold text-sm">⭐10</span>
+                            <button onclick="startTask('t3')"
+                                class="px-3 py-1.5 bg-blue-50 text-blue-600 rounded-lg text-xs font-medium hover:bg-blue-100 transition">开始</button>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-2xl flex items-center gap-3 shadow-sm border border-gray-100">
+                            <div class="w-10 h-10 bg-yellow-100 rounded-xl flex items-center justify-center text-xl">✏️
+                            </div>
+                            <div class="flex-1">
+                                <div class="font-medium text-slate-800">完成数学作业</div>
+                                <div class="text-xs text-slate-400">今日 21:00 前 · 👨爸爸的任务</div>
+                            </div>
+                            <span class="text-blue-500 font-bold text-sm">💎50</span>
+                            <button onclick="startTask('t4')"
+                                class="px-3 py-1.5 bg-blue-50 text-blue-600 rounded-lg text-xs font-medium hover:bg-blue-100 transition">开始</button>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-2xl flex items-center gap-3 shadow-sm border border-gray-100">
+                            <div class="w-10 h-10 bg-pink-100 rounded-xl flex items-center justify-center text-xl">🎹
+                            </div>
+                            <div class="flex-1">
+                                <div class="font-medium text-slate-800">练琴20分钟</div>
+                                <div class="text-xs text-slate-400">今日 19:00 前</div>
+                            </div>
+                            <span class="text-yellow-500 font-bold text-sm">⭐15</span>
+                            <button onclick="startTask('t5')"
+                                class="px-3 py-1.5 bg-blue-50 text-blue-600 rounded-lg text-xs font-medium hover:bg-blue-100 transition">开始</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add Task Button -->
+                <button
+                    class="w-full py-3 border-2 border-dashed border-gray-300 rounded-2xl text-slate-400 font-medium hover:border-blue-400 hover:text-blue-500 transition flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    添加新任务
+                </button>
+            </div>
+
+            <!-- Tab Content: Plan -->
+            <div id="task-tab-plan" class="task-tab-content flex-1 overflow-y-auto p-4 space-y-4 hidden">
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="text-sm font-semibold text-slate-700">📅 长期计划</span>
+                </div>
+
+                <!-- Weekly Plan -->
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xl">📚</span>
+                            <span class="font-bold text-slate-800">每日阅读</span>
+                        </div>
+                        <span
+                            class="px-2 py-1 bg-green-100 text-green-600 text-xs rounded-full font-medium">习惯养成中</span>
+                    </div>
+                    <div class="text-sm text-slate-500 mb-3">每天阅读30分钟，培养阅读习惯</div>
+                    <div class="flex gap-1">
+                        <div
+                            class="w-8 h-8 rounded-lg bg-green-500 text-white text-xs flex items-center justify-center font-medium">
+                            一</div>
+                        <div
+                            class="w-8 h-8 rounded-lg bg-green-500 text-white text-xs flex items-center justify-center font-medium">
+                            二</div>
+                        <div
+                            class="w-8 h-8 rounded-lg bg-green-500 text-white text-xs flex items-center justify-center font-medium">
+                            三</div>
+                        <div
+                            class="w-8 h-8 rounded-lg bg-blue-500 text-white text-xs flex items-center justify-center font-medium">
+                            四</div>
+                        <div
+                            class="w-8 h-8 rounded-lg bg-slate-200 text-slate-400 text-xs flex items-center justify-center font-medium">
+                            五</div>
+                        <div
+                            class="w-8 h-8 rounded-lg bg-slate-200 text-slate-400 text-xs flex items-center justify-center font-medium">
+                            六</div>
+                        <div
+                            class="w-8 h-8 rounded-lg bg-slate-200 text-slate-400 text-xs flex items-center justify-center font-medium">
+                            日</div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xl">🏃</span>
+                            <span class="font-bold text-slate-800">每周运动3次</span>
+                        </div>
+                        <span class="px-2 py-1 bg-blue-100 text-blue-600 text-xs rounded-full font-medium">本周 2/3</span>
+                    </div>
+                    <div class="text-sm text-slate-500 mb-3">每次运动30分钟以上</div>
+                    <div class="w-full bg-gray-100 h-2 rounded-full">
+                        <div class="w-[66%] h-full bg-gradient-to-r from-blue-400 to-blue-600 rounded-full"></div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xl">🎹</span>
+                            <span class="font-bold text-slate-800">学会弹《小星星》</span>
+                        </div>
+                        <span
+                            class="px-2 py-1 bg-orange-100 text-orange-600 text-xs rounded-full font-medium">长期目标</span>
+                    </div>
+                    <div class="text-sm text-slate-500 mb-3">预计完成时间：2周后</div>
+                    <div class="w-full bg-gray-100 h-2 rounded-full">
+                        <div class="w-[30%] h-full bg-gradient-to-r from-orange-400 to-orange-600 rounded-full"></div>
+                    </div>
+                </div>
+
+                <!-- Add Plan Button -->
+                <button
+                    class="w-full py-3 border-2 border-dashed border-gray-300 rounded-2xl text-slate-400 font-medium hover:border-blue-400 hover:text-blue-500 transition flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    添加新计划
+                </button>
+            </div>
+
+            <!-- Tab Content: History/Achievement -->
+            <div id="task-tab-history" class="task-tab-content flex-1 overflow-y-auto p-4 space-y-4 hidden">
+
+                <!-- Stats Summary -->
+                <div class="bg-gradient-to-r from-blue-500 to-purple-500 p-4 rounded-2xl text-white">
+                    <div class="text-sm opacity-80 mb-2">累计获得</div>
+                    <div class="flex items-center gap-6">
+                        <div>
+                            <div class="text-2xl font-bold">⭐ 1,280</div>
+                            <div class="text-xs opacity-70">金币</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold">💎 150</div>
+                            <div class="text-xs opacity-70">心愿币</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold">✅ 89</div>
+                            <div class="text-xs opacity-70">已完成</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="text-sm font-semibold text-slate-700">📋 历史记录</span>
+                </div>
+
+                <!-- History Items -->
+                <div class="space-y-2">
+                    <div class="bg-white p-4 rounded-2xl flex items-center gap-3 border border-gray-100">
+                        <div class="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center">
+                            <svg class="w-5 h-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <div class="font-medium text-slate-800">整理书包</div>
+                            <div class="text-xs text-slate-400">今天 09:30 完成</div>
+                        </div>
+                        <span class="text-green-500 font-bold text-sm">+⭐10</span>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-2xl flex items-center gap-3 border border-gray-100">
+                        <div class="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center">
+                            <svg class="w-5 h-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <div class="font-medium text-slate-800">早起打卡</div>
+                            <div class="text-xs text-slate-400">今天 07:00 完成</div>
+                        </div>
+                        <span class="text-green-500 font-bold text-sm">+⭐5</span>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-2xl flex items-center gap-3 border border-gray-100">
+                        <div class="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center">
+                            <svg class="w-5 h-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <div class="font-medium text-slate-800">阅读《小王子》</div>
+                            <div class="text-xs text-slate-400">昨天 20:15 完成</div>
+                        </div>
+                        <span class="text-green-500 font-bold text-sm">+⭐20</span>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-2xl flex items-center gap-3 border border-gray-100">
+                        <div class="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center">
+                            <svg class="w-5 h-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <div class="font-medium text-slate-800">跳绳500个</div>
+                            <div class="text-xs text-slate-400">昨天 18:30 完成 · 👨爸爸的任务</div>
+                        </div>
+                        <span class="text-green-500 font-bold text-sm">+💎50</span>
+                    </div>
+                </div>
+
+                <button class="w-full py-2 text-blue-500 text-sm font-medium">查看更多记录</button>
+            </div>
+        </div>
+
+        <!-- 3. DRESS UP OVERLAY (Simple) -->
+        <!-- 3. DRESS/WARDROBE OVERLAY (Per PRD V2.0 装扮管理) -->
+        <div id="page-dress"
+            class="absolute inset-0 z-50 bg-gradient-to-b from-pink-100 to-pink-50 hidden flex-col rounded-[40px] overflow-hidden">
+
+            <!-- Header -->
+            <div class="p-4 pt-10 flex items-center justify-between z-20">
+                <button onclick="closePage('dress')"
+                    class="w-9 h-9 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center shadow-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-slate-600" viewBox="0 0 20 20"
+                        fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                            clip-rule="evenodd" />
+                    </svg>
+                </button>
+                <span class="text-lg font-bold text-slate-800">精灵形象</span>
+                <div class="w-9 h-9"></div>
+            </div>
+
+            <!-- Preview Area -->
+            <div class="flex-shrink-0 h-[38%] relative flex flex-col items-center justify-center">
+                <div id="dress-preview-character" class="w-44 h-44 animate-float">
+                    <img src="assets/partner_kuqi_v3.png" class="w-full h-full object-contain filter drop-shadow-2xl"
+                        alt="Preview">
+                </div>
+                <!-- Action Button -->
+                <button id="dress-action-btn" onclick="handleDressAction()"
+                    class="absolute bottom-4 right-4 px-6 py-2 bg-white text-slate-700 font-medium rounded-full shadow-md border border-gray-200 hover:bg-slate-50 active:scale-95 transition">
+                    使用
+                </button>
+            </div>
+
+            <!-- Bottom Panel -->
+            <div class="flex-1 bg-white rounded-t-[32px] -mt-2 relative z-10 overflow-hidden flex flex-col">
+
+                <!-- Primary Tabs Row (形象/装扮/动作 + Coins) -->
+                <div class="flex items-center px-4 py-3 border-b border-gray-100">
+                    <div class="flex gap-6">
+                        <button onclick="switchDressCategory('avatar')"
+                            class="dress-primary-tab text-sm font-semibold text-slate-800 border-b-2 border-slate-800 pb-1"
+                            data-category="avatar">形象</button>
+                        <button onclick="switchDressCategory('decoration')"
+                            class="dress-primary-tab text-sm font-medium text-slate-400 pb-1"
+                            data-category="decoration">装扮</button>
+                        <button onclick="switchDressCategory('action')"
+                            class="dress-primary-tab text-sm font-medium text-slate-400 pb-1"
+                            data-category="action">动作</button>
+                    </div>
+                    <div class="ml-auto flex items-center gap-1 text-yellow-500 font-bold text-sm">
+                        <span>⭐</span><span id="dress-coins">176</span>
+                    </div>
+                </div>
+
+                <!-- Secondary Tabs Row -->
+                <div id="dress-secondary-tabs"
+                    class="flex gap-2 px-4 py-2 border-b border-gray-50 overflow-x-auto scrollbar-hide">
+                    <!-- Populated by JS -->
+                </div>
+
+                <!-- Grid (4 columns) -->
+                <div id="dress-grid" class="flex-1 overflow-y-auto grid grid-cols-4 gap-2 p-4 pb-8 scrollbar-hide">
+                    <!-- Items will be generated by JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. PROFILE OVERLAY -->
+        <div id="page-profile" class="absolute inset-0 z-50 bg-slate-50 hidden flex-col rounded-[40px] overflow-hidden">
+            <!-- Header (Unified) -->
+            <div class="p-4 pt-12 flex items-center gap-4">
+                <button onclick="closePage('profile')"
+                    class="w-10 h-10 rounded-full glass-panel flex items-center justify-center active:scale-95 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-300" viewBox="0 0 20 20"
+                        fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                            clip-rule="evenodd" />
+                    </svg>
+                </button>
+                <span class="text-lg font-bold">个人中心</span>
+            </div>
+
+            <div class="p-4 pt-4">
+                <div class="glass-card p-6 rounded-3xl flex items-center gap-4 mb-6">
+                    <div class="w-16 h-16 rounded-full bg-gray-600 overflow-hidden">
+                        <img src="https://ui-avatars.com/api/?name=Kid&background=random" class="w-full h-full">
+                    </div>
+                    <div>
+                        <div class="text-xl font-bold">小明</div>
+                        <div class="text-gray-400">ID: 882910</div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="glass-panel p-4 rounded-2xl">
+                        <div class="text-2xl font-bold text-yellow-400">192</div>
+                        <div class="text-xs text-gray-400">星星币 (Star Coin)</div>
+                    </div>
+                    <div class="glass-panel p-4 rounded-2xl">
+                        <div class="text-2xl font-bold text-blue-400">45</div>
+                        <div class="text-xs text-gray-400">心愿币 (Wish Coin)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. CHAT / TASK CREATION OVERLAY -->
+        <div id="page-chat" class="absolute inset-0 z-50 bg-slate-50 hidden flex-col rounded-[40px] overflow-hidden">
+            <!-- Header (Unified style) -->
+            <div class="p-4 pt-12 flex items-center gap-4 bg-white/80 backdrop-blur-lg border-b border-gray-200">
+                <button onclick="closePage('chat')"
+                    class="w-10 h-10 rounded-full glass-panel flex items-center justify-center active:scale-95 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-slate-600" viewBox="0 0 20 20"
+                        fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                            clip-rule="evenodd" />
+                    </svg>
+                </button>
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-full overflow-hidden border border-gray-200">
+                        <img src="assets/partner_kuqi_v3.png" class="w-full h-full object-cover">
+                    </div>
+                    <span class="font-bold text-slate-800">酷奇</span>
+                </div>
+            </div>
+
+            <!-- Chat Container -->
+            <div id="chat-container" class="flex-1 overflow-y-auto p-4 space-y-4">
+                <!-- Messages will be injected here -->
+            </div>
+
+            <!-- Bottom Input Area (In Chat) -->
+            <div class="p-4 bg-white/80 backdrop-blur-lg border-t border-gray-200 pb-8">
+                <div class="flex items-center gap-2">
+                    <input type="text" id="chat-input-inner"
+                        class="flex-1 bg-gray-100 rounded-full px-4 py-3 text-slate-800 placeholder-slate-400 outline-none"
+                        placeholder="回复酷奇...">
+                    <button onclick="sendReplyFromChat()"
+                        class="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/30">
+                        <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. EXECUTION OVERLAY (New) -->
+        <div id="page-execution"
+            class="absolute inset-0 z-50 bg-slate-50 hidden flex-col transition-colors duration-500 rounded-[40px] overflow-hidden">
+            <!-- Spotlight Background (Light) -->
+            <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+                <div
+                    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-200/30 rounded-full blur-[100px]">
+                </div>
+            </div>
+
+            <!-- Header: Timer & Progress -->
+            <div class="relative z-10 p-6 pt-12 flex justify-between items-start">
+                <div class="flex flex-col">
+                    <span class="text-slate-500 text-xs font-bold tracking-widest uppercase mb-1">正在任务中</span>
+                    <span id="exec-timer"
+                        class="text-4xl font-mono font-bold text-slate-800 tracking-wider tabular-nums">00:00</span>
+                </div>
+
+                <div class="flex flex-col items-end">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span id="exec-step-count" class="text-2xl font-bold text-orange-500">1</span>
+                        <span class="text-slate-400 text-sm">/</span>
+                        <span id="exec-total-count" class="text-slate-400 text-sm">3</span>
+                    </div>
+                    <div class="w-24 h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                        <div id="exec-progress-bar" class="h-full bg-orange-500 w-1/3 transition-[width] duration-500">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content: Current Step -->
+            <div class="relative z-10 flex-1 flex flex-col items-center justify-center p-8 text-center">
+                <!-- Step Illustration Placeholder -->
+                <div
+                    class="w-48 h-48 mb-8 rounded-full bg-white shadow-xl border border-gray-100 flex items-center justify-center animate-float">
+                    <div class="text-6xl">✨</div>
+                </div>
+
+                <h2 id="exec-step-title" class="text-3xl md:text-4xl font-bold text-slate-800 mb-4 leading-tight">
+                    准备画纸和彩笔
+                </h2>
+                <p class="text-slate-500 text-lg">保持专注，你做得很好！</p>
+            </div>
+
+            <!-- Bottom Controls -->
+            <div class="relative z-10 p-8 pb-12">
+                <button onclick="completeCurrentStep()"
+                    class="w-full py-4 bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl text-xl font-bold text-white shadow-xl shadow-green-500/20 active:scale-[0.98] transition hover:brightness-110 flex items-center justify-center gap-2 group">
+                    <div
+                        class="w-6 h-6 rounded-full border-2 border-white/50 flex items-center justify-center group-hover:bg-white text-emerald-600 transition">
+                        <svg class="w-4 h-4 opacity-0 group-hover:opacity-100" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </div>
+                    完成这一步
+                </button>
+                <button onclick="closePage('execution')"
+                    class="w-full mt-4 py-3 text-sm text-slate-400 hover:text-slate-600">暂时离开</button>
+            </div>
+
+            <!-- Celebration Overlay (Hidden) -->
+            <div id="celebration-overlay"
+                class="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black/60 backdrop-blur-sm hidden pointer-events-none">
+                <div class="text-[100px] animate-bounce-in drop-shadow-2xl">🎉</div>
+                <div class="text-3xl font-bold text-yellow-400 mt-4 animate-slide-up">太棒了！</div>
+                <div class="text-white mt-2 animate-fade-in">完成第 <span id="cel-step-num">1</span> 步</div>
+            </div>
+        </div>
+
+    </div> <!-- End of #app -->
+
+    <script>
+        // ===== MALL SYSTEM (Per Correct Reference Design) =====
+        const mallData = {
+            avatar: {
+                name: '形象',
+                subTabs: ['推荐', '最新', '典藏图鉴', '普通', '高级'],
+                items: [
+                    { id: 'a1', img: '🐱', name: '奶芙甜甜', price: 20, owned: false },
+                    { id: 'a2', img: '😺', name: '瓦瓦小猫咪', price: 20, owned: false },
+                    { id: 'a3', img: '🐱', name: '小喵布布', price: 0, owned: true, daysLeft: 30, inUse: false },
+                    { id: 'a4', img: '🐭', name: '天使鼠鼠', price: 20, owned: false },
+                    { id: 'a5', img: '🐧', name: '高雅企鹅', price: 20, owned: false },
+                    { id: 'a6', img: '🐼', name: '憨憨猫', price: 20, owned: false },
+                    { id: 'a7', img: '🍰', name: '圣诞欧米', price: 20, owned: false },
+                    { id: 'a8', img: '🐰', name: '派米兔兔', price: 20, owned: false },
+                ]
+            },
+            decoration: {
+                name: '装扮',
+                subTabs: ['推荐', '头部', '手部', '面部', '背部', '尾部'],
+                items: [
+                    { id: 'd1', img: '🧢', name: '鸭舌帽', price: 10, category: 'head', owned: false },
+                    { id: 'd2', img: '👑', name: '星光冠', price: 15, category: 'head', owned: false, isNew: true },
+                    { id: 'd3', img: '👓', name: '护目镜', price: 8, category: 'face', owned: true, daysLeft: 25 },
+                    { id: 'd4', img: '🎒', name: '小书包', price: 20, category: 'back', owned: false },
+                    { id: 'd5', img: '🧣', name: '围巾', price: 5, category: 'hand', owned: false },
+                    { id: 'd6', img: '🎀', name: '蝴蝶结', price: 8, category: 'head', owned: true, daysLeft: 10 },
+                    { id: 'd7', img: '🎩', name: '魔法帽', price: 25, category: 'head', owned: false },
+                    { id: 'd8', img: '🦋', name: '蝴蝶翅膀', price: 18, category: 'back', owned: false },
+                ]
+            },
+            action: {
+                name: '动作',
+                subTabs: ['全部', '普通', '高级', '会员'],
+                items: [
+                    { id: 'ac1', img: '👋', name: '挥手', price: 0, tier: 'normal', owned: true },
+                    { id: 'ac2', img: '💃', name: '跳舞', price: 15, tier: 'advanced', owned: false },
+                    { id: 'ac3', img: '🎉', name: '庆祝', price: 15, tier: 'advanced', owned: true },
+                    { id: 'ac4', img: '😴', name: '打盹', price: 0, tier: 'normal', owned: true },
+                    { id: 'ac5', img: '🚀', name: '起飞', price: 20, tier: 'vip', owned: false },
+                ]
+            }
+        };
+
+        let userCoins = 176;
+        let currentMallCategory = 'avatar';
+        let currentSubTab = '推荐';
+        let selectedMallItem = null;
+
+        function initMall() {
+            switchMallCategory('avatar');
+            updateCoinsDisplay();
+        }
+
+        function switchMallCategory(category) {
+            currentMallCategory = category;
+            currentSubTab = mallData[category].subTabs[0];
+            selectedMallItem = null;
+
+            // Update primary tabs - new style matching reference
+            document.querySelectorAll('.mall-primary-tab').forEach(tab => {
+                if (tab.dataset.category === category) {
+                    tab.classList.add('text-slate-800', 'font-semibold', 'border-b-2', 'border-slate-800');
+                    tab.classList.remove('text-slate-400', 'font-medium');
+                } else {
+                    tab.classList.remove('text-slate-800', 'font-semibold', 'border-b-2', 'border-slate-800');
+                    tab.classList.add('text-slate-400', 'font-medium');
+                }
+            });
+
+            renderSecondaryTabs();
+            renderMallGrid();
+            updateMallPreview();
+        }
+
+        function renderSecondaryTabs() {
+            const container = document.getElementById('mall-secondary-tabs');
+            const subTabs = mallData[currentMallCategory].subTabs;
+
+            container.innerHTML = subTabs.map(tab => `
+                <button onclick="switchSubTab('${tab}')" 
+                        class="mall-sub-tab px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition border
+                               ${currentSubTab === tab ? 'bg-slate-800 text-white border-slate-800' : 'bg-white text-slate-600 border-gray-200 hover:border-gray-300'}"
+                        data-subtab="${tab}">
+                    ${tab}
+                </button>
+            `).join('');
+        }
+
+        function switchSubTab(tab) {
+            currentSubTab = tab;
+            renderSecondaryTabs();
+            renderMallGrid();
+        }
+
+        function renderMallGrid() {
+            const grid = document.getElementById('mall-grid');
+            const category = mallData[currentMallCategory];
+            let items = [...category.items]; // Clone to avoid mutation
+
+            // Filter by sub-tab (only for specific categories)
+            if (currentMallCategory === 'decoration' && currentSubTab !== '推荐') {
+                const catMap = { '头部': 'head', '手部': 'hand', '面部': 'face', '背部': 'back', '尾部': 'tail' };
+                items = items.filter(i => i.category === catMap[currentSubTab]);
+            } else if (currentMallCategory === 'action' && currentSubTab !== '全部') {
+                const tierMap = { '普通': 'normal', '高级': 'advanced', '会员': 'vip' };
+                items = items.filter(i => i.tier === tierMap[currentSubTab]);
+            }
+
+            // Build grid HTML
+            let html = items.map(item => {
+                const isSelected = selectedMallItem?.id === item.id;
+                let statusText = '';
+                let statusClass = 'text-slate-400';
+
+                if (item.owned) {
+                    statusText = '已拥有';
+                    statusClass = 'text-slate-400';
+                } else if (item.price !== undefined) {
+                    statusText = `⭐ ${item.price}`;
+                    statusClass = 'text-yellow-500 font-semibold';
+                }
+
+                return `
+                    <div onclick="selectMallItem('${item.id}')" 
+                         class="flex flex-col items-center p-2 cursor-pointer group relative"
+                         data-id="${item.id}">
+                        <div class="w-14 h-14 rounded-2xl bg-white flex items-center justify-center overflow-hidden transition border-2
+                                    ${isSelected ? 'border-slate-400 shadow-md' : 'border-transparent'}">
+                            <span class="text-3xl">${item.img}</span>
+                        </div>
+                        <span class="text-[11px] text-slate-700 mt-1.5 font-medium text-center leading-tight truncate w-full">${item.name}</span>
+                        <span class="text-[10px] ${statusClass} mt-0.5">${statusText}</span>
+                    </div>
+                `;
+            }).join('');
+
+            grid.innerHTML = html;
+        }
+
+        function updateMallPreview() {
+            const statusText = document.getElementById('mall-status-text');
+            const actionBtn = document.getElementById('mall-action-btn');
+
+            if (selectedMallItem) {
+                if (selectedMallItem.owned) {
+                    const days = selectedMallItem.daysLeft;
+                    if (days === -1) {
+                        statusText.textContent = '已拥有，永久有效';
+                    } else if (days > 0) {
+                        statusText.textContent = `已拥有，剩余有效期 ${days} 天`;
+                    } else {
+                        statusText.textContent = '已拥有';
+                    }
+                    actionBtn.textContent = '去使用';
+                    actionBtn.className = 'mt-3 px-8 py-2.5 bg-gradient-to-r from-orange-400 to-orange-500 text-white font-bold rounded-full shadow-lg shadow-orange-300/50 active:scale-95 transition';
+                } else {
+                    statusText.textContent = `⭐ ${selectedMallItem.price} 金币`;
+                    actionBtn.textContent = '兑换';
+                    actionBtn.className = 'mt-3 px-8 py-2.5 bg-gradient-to-r from-orange-400 to-orange-500 text-white font-bold rounded-full shadow-lg shadow-orange-300/50 active:scale-95 transition';
+                }
+            } else {
+                statusText.textContent = '选择一个商品查看详情';
+                actionBtn.textContent = '去使用';
+                actionBtn.className = 'mt-3 px-8 py-2.5 bg-gray-300 text-gray-500 font-bold rounded-full cursor-not-allowed';
+            }
+        }
+
+
+        function selectMallItem(itemId) {
+            const category = mallData[currentMallCategory];
+            const item = category.items.find(i => i.id === itemId);
+            if (!item) return;
+
+            selectedMallItem = item;
+            renderMallGrid();
+            updateMallPreview();
+        }
+
+        function goToShop() {
+            alert('更多商品敬请期待！');
+        }
+
+        function filterMallItems(category) {
+            switchSubTab(category === 'all' ? '全部' : category);
+        }
+
+        function handleMallAction() {
+            if (!selectedMallItem) return;
+
+            if (selectedMallItem.owned) {
+                // Go to dress up page
+                closePage('mall');
+                openPage('dress');
+            } else {
+                // Show purchase confirm
+                showPurchaseConfirm();
+            }
+        }
+
+        function showPurchaseConfirm() {
+            if (!selectedMallItem) return;
+
+            // Check coins
+            if (userCoins < selectedMallItem.price) {
+                alert('金币不足！继续完成任务赚取更多金币吧～');
+                return;
+            }
+
+            document.getElementById('confirm-emoji').textContent = selectedMallItem.img;
+            document.getElementById('confirm-name').textContent = selectedMallItem.name;
+            document.getElementById('confirm-price').textContent = selectedMallItem.price;
+            const modal = document.getElementById('purchase-confirm-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function hidePurchaseConfirm() {
+            const modal = document.getElementById('purchase-confirm-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function confirmPurchase() {
+            if (!selectedMallItem) return;
+
+            // Deduct coins
+            userCoins -= selectedMallItem.price;
+            selectedMallItem.owned = true;
+            selectedMallItem.daysLeft = 30;
+            updateCoinsDisplay();
+
+            // Hide confirm, show success
+            hidePurchaseConfirm();
+
+            document.getElementById('success-emoji').textContent = selectedMallItem.img;
+            document.getElementById('success-name').textContent = selectedMallItem.name;
+            const successModal = document.getElementById('purchase-success-modal');
+            successModal.classList.remove('hidden');
+            successModal.classList.add('flex');
+
+            // Refresh grid
+            renderMallGrid();
+        }
+
+        function updateCoinsDisplay() {
+            document.getElementById('user-coins').textContent = userCoins;
+        }
+
+        function shareSuccess() {
+            // Mock share functionality
+            alert('分享功能开发中，敬请期待！');
+        }
+
+        function goToUse() {
+            const modal = document.getElementById('purchase-success-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            closePage('mall');
+            openPage('dress');
+            // Reset selection
+            selectedMallItem = null;
+            updateMallPreview();
+        }
+
+        function closeSuccessModal() {
+            const modal = document.getElementById('purchase-success-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            renderMallGrid();
+            updateMallPreview();
+        }
+
+        // Initialize mall when page opens
+        const mallObserver = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.target.id === 'page-mall' && !mutation.target.classList.contains('hidden')) {
+                    initMall();
+                }
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const mallPage = document.getElementById('page-mall');
+            if (mallPage) {
+                mallObserver.observe(mallPage, { attributes: true, attributeFilter: ['class'] });
+            }
+            // Also observe dress page
+            const dressPage = document.getElementById('page-dress');
+            if (dressPage) {
+                dressObserver.observe(dressPage, { attributes: true, attributeFilter: ['class'] });
+            }
+        });
+
+        // ===== DRESS/WARDROBE SYSTEM (装扮管理 Per PRD V2.0) =====
+        const dressData = {
+            avatar: {
+                name: '形象',
+                subTabs: ['我的', '历史形象'],
+                items: [
+                    { id: 'da1', img: '🐱', name: '小喵布布', daysLeft: 30, owned: true, inUse: false },
+                    { id: 'da2', img: '🐦', name: '疯狂的鸽子', daysLeft: 30, owned: true, inUse: true },
+                    { id: 'da3', img: '🐶', name: '哈巴狗', daysLeft: 20, owned: true, inUse: false },
+                    { id: 'da4', img: '⛄', name: '小雪人', daysLeft: -1, owned: true, inUse: false }, // -1 = 永久
+                    { id: 'da5', img: '🐷', name: '猪妞警官', daysLeft: 17, owned: true, inUse: false },
+                    { id: 'da6', img: '👑', name: '皇帝', daysLeft: 16, owned: true, inUse: false },
+                    { id: 'da7', img: '🐙', name: '粉嘟嘟', daysLeft: -1, owned: true, inUse: false },
+                ],
+                historyItems: [
+                    { id: 'dah1', img: '🦊', name: '小狐狸', daysLeft: 0, owned: true, expired: true },
+                ]
+            },
+            decoration: {
+                name: '装扮',
+                subTabs: ['我的', '头部', '手部', '面部', '尾部', '历史装扮'],
+                items: [
+                    { id: 'dd1', img: '👓', name: '护目镜', category: 'face', daysLeft: 25, owned: true, inUse: false },
+                    { id: 'dd2', img: '🎀', name: '蝴蝶结', category: 'head', daysLeft: 10, owned: true, inUse: true },
+                    { id: 'dd3', img: '🧣', name: '围巾', category: 'hand', daysLeft: 15, owned: true, inUse: false },
+                    { id: 'dd4', img: '🎩', name: '魔法帽', category: 'head', daysLeft: -1, owned: true, inUse: false },
+                ],
+                historyItems: []
+            },
+            action: {
+                name: '动作',
+                subTabs: ['已装配', '全部'],
+                items: [
+                    { id: 'dac1', img: '👋', name: '挥手', owned: true, equipped: true, slot: 1 },
+                    { id: 'dac2', img: '🎉', name: '庆祝', owned: true, equipped: true, slot: 2 },
+                    { id: 'dac3', img: '😴', name: '打盹', owned: true, equipped: true, slot: 3 },
+                    { id: 'dac4', img: '💃', name: '跳舞', owned: true, equipped: false },
+                ]
+            }
+        };
+
+        let currentDressCategory = 'avatar';
+        let currentDressSubTab = '我的';
+        let selectedDressItem = null;
+
+        function initDress() {
+            switchDressCategory('avatar');
+            document.getElementById('dress-coins').textContent = userCoins;
+        }
+
+        function switchDressCategory(category) {
+            currentDressCategory = category;
+            currentDressSubTab = dressData[category].subTabs[0];
+            selectedDressItem = null;
+
+            // Update primary tabs
+            document.querySelectorAll('.dress-primary-tab').forEach(tab => {
+                if (tab.dataset.category === category) {
+                    tab.classList.add('text-slate-800', 'font-semibold', 'border-b-2', 'border-slate-800');
+                    tab.classList.remove('text-slate-400', 'font-medium');
+                } else {
+                    tab.classList.remove('text-slate-800', 'font-semibold', 'border-b-2', 'border-slate-800');
+                    tab.classList.add('text-slate-400', 'font-medium');
+                }
+            });
+
+            renderDressSecondaryTabs();
+            renderDressGrid();
+            updateDressActionBtn();
+        }
+
+        function renderDressSecondaryTabs() {
+            const container = document.getElementById('dress-secondary-tabs');
+            const subTabs = dressData[currentDressCategory].subTabs;
+
+            container.innerHTML = subTabs.map(tab => `
+                <button onclick="switchDressSubTab('${tab}')" 
+                        class="dress-sub-tab px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition border
+                               ${currentDressSubTab === tab ? 'bg-slate-800 text-white border-slate-800' : 'bg-white text-slate-600 border-gray-200 hover:border-gray-300'}"
+                        data-subtab="${tab}">
+                    ${tab}
+                </button>
+            `).join('');
+        }
+
+        function switchDressSubTab(tab) {
+            currentDressSubTab = tab;
+            selectedDressItem = null;
+            renderDressSecondaryTabs();
+            renderDressGrid();
+            updateDressActionBtn();
+        }
+
+        function renderDressGrid() {
+            const grid = document.getElementById('dress-grid');
+            const category = dressData[currentDressCategory];
+            let items = [...category.items];
+
+            // Filter by sub-tab
+            if (currentDressCategory === 'avatar') {
+                if (currentDressSubTab === '历史形象') {
+                    items = category.historyItems || [];
+                } else {
+                    items = items.filter(i => i.daysLeft !== 0);
+                }
+            } else if (currentDressCategory === 'decoration') {
+                if (currentDressSubTab === '历史装扮') {
+                    items = category.historyItems || [];
+                } else if (currentDressSubTab !== '我的') {
+                    const catMap = { '头部': 'head', '手部': 'hand', '面部': 'face', '尾部': 'tail' };
+                    items = items.filter(i => i.category === catMap[currentDressSubTab]);
+                }
+            } else if (currentDressCategory === 'action') {
+                if (currentDressSubTab === '已装配') {
+                    items = items.filter(i => i.equipped);
+                }
+            }
+
+            // Build grid HTML
+            let html = '';
+
+            // "More" entry button (first item)
+            html += `
+                <div onclick="goToMallFromDress()" class="flex flex-col items-center justify-center p-2 cursor-pointer group">
+                    <div class="w-14 h-14 rounded-2xl bg-orange-100 border-2 border-dashed border-orange-300 flex items-center justify-center group-hover:bg-orange-200 transition">
+                        <span class="text-2xl">🛒</span>
+                    </div>
+                    <span class="text-[10px] text-slate-500 mt-1.5">更多${category.name}</span>
+                </div>
+            `;
+
+            // Items
+            html += items.map(item => {
+                const isSelected = selectedDressItem?.id === item.id;
+                let statusText = '';
+                let statusClass = 'text-slate-400';
+
+                if (item.daysLeft === -1) {
+                    statusText = '永久';
+                } else if (item.daysLeft > 0) {
+                    statusText = `剩余 ${item.daysLeft} 天`;
+                } else if (item.daysLeft === 0) {
+                    statusText = '已过期';
+                    statusClass = 'text-red-400';
+                } else if (item.slot) {
+                    statusText = `槽位 ${item.slot}`;
+                }
+
+                return `
+                    <div onclick="selectDressItem('${item.id}')" 
+                         class="flex flex-col items-center p-2 cursor-pointer group relative"
+                         data-id="${item.id}">
+                        <div class="w-14 h-14 rounded-2xl bg-white flex items-center justify-center overflow-hidden transition border-2 shadow-sm
+                                    ${isSelected ? 'border-slate-400 shadow-md' : 'border-transparent'}">
+                            <span class="text-3xl">${item.img}</span>
+                        </div>
+                        ${item.inUse ? '<div class="absolute top-0 right-1 bg-orange-500 text-white text-[8px] px-1.5 py-0.5 rounded-full font-medium">使用中</div>' : ''}
+                        <span class="text-[11px] text-slate-700 mt-1.5 font-medium text-center leading-tight truncate w-full">${item.name}</span>
+                        <span class="text-[10px] ${statusClass} mt-0.5">${statusText}</span>
+                    </div>
+                `;
+            }).join('');
+
+            grid.innerHTML = html;
+        }
+
+        function selectDressItem(itemId) {
+            const category = dressData[currentDressCategory];
+            let item = category.items.find(i => i.id === itemId);
+            if (!item && category.historyItems) {
+                item = category.historyItems.find(i => i.id === itemId);
+            }
+            if (!item) return;
+
+            selectedDressItem = item;
+            renderDressGrid();
+            updateDressActionBtn();
+        }
+
+        function updateDressActionBtn() {
+            const btn = document.getElementById('dress-action-btn');
+            if (!selectedDressItem) {
+                btn.textContent = '使用';
+                btn.className = 'absolute bottom-4 right-4 px-6 py-2 bg-gray-200 text-gray-400 font-medium rounded-full cursor-not-allowed';
+                return;
+            }
+
+            if (selectedDressItem.inUse || selectedDressItem.equipped) {
+                btn.textContent = '续期';
+                btn.className = 'absolute bottom-4 right-4 px-6 py-2 bg-orange-100 text-orange-600 font-medium rounded-full shadow-md border border-orange-200 hover:bg-orange-50 active:scale-95 transition';
+            } else if (selectedDressItem.expired || selectedDressItem.daysLeft === 0) {
+                btn.textContent = '续期';
+                btn.className = 'absolute bottom-4 right-4 px-6 py-2 bg-orange-100 text-orange-600 font-medium rounded-full shadow-md border border-orange-200 hover:bg-orange-50 active:scale-95 transition';
+            } else {
+                btn.textContent = '使用';
+                btn.className = 'absolute bottom-4 right-4 px-6 py-2 bg-white text-slate-700 font-medium rounded-full shadow-md border border-gray-200 hover:bg-slate-50 active:scale-95 transition';
+            }
+        }
+
+        function handleDressAction() {
+            if (!selectedDressItem) return;
+
+            if (selectedDressItem.inUse) {
+                alert('续期功能开发中，敬请期待！');
+            } else {
+                // Set as in use
+                dressData[currentDressCategory].items.forEach(i => i.inUse = false);
+                selectedDressItem.inUse = true;
+                renderDressGrid();
+                updateDressActionBtn();
+            }
+        }
+
+        function goToMallFromDress() {
+            closePage('dress');
+            openPage('mall');
+            // Switch to corresponding category
+            setTimeout(() => switchMallCategory(currentDressCategory), 100);
+        }
+
+        // Initialize dress page when opened
+        const dressObserver = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.target.id === 'page-dress' && !mutation.target.classList.contains('hidden')) {
+                    initDress();
+                }
+            });
+        });
+
+        // --- Navigation ---
+        function openPage(pageId) {
+            const el = document.getElementById('page-' + pageId);
+            if (el) {
+                el.classList.remove('hidden');
+                el.classList.add('flex');
+                el.classList.add('animate-slide-up');
+            }
+        }
+
+        function closePage(pageId) {
+            const el = document.getElementById('page-' + pageId);
+            if (el) {
+                el.classList.add('hidden');
+                el.classList.remove('flex');
+                el.classList.remove('animate-slide-up');
+            }
+        }
+
+        // --- Task Center Functions ---
+        function switchTaskTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.task-tab').forEach(tab => {
+                if (tab.dataset.tab === tabName) {
+                    tab.classList.add('text-blue-600', 'font-semibold', 'border-blue-600');
+                    tab.classList.remove('text-slate-400', 'font-medium', 'border-transparent');
+                } else {
+                    tab.classList.remove('text-blue-600', 'font-semibold', 'border-blue-600');
+                    tab.classList.add('text-slate-400', 'font-medium', 'border-transparent');
+                }
+            });
+
+            // Update tab content
+            document.querySelectorAll('.task-tab-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            const activeContent = document.getElementById('task-tab-' + tabName);
+            if (activeContent) {
+                activeContent.classList.remove('hidden');
+            }
+        }
+
+        function startTask(taskId) {
+            alert('开始任务：' + taskId + '\n任务已加入进行中！');
+        }
+
+        function pauseTask() {
+            alert('任务已暂停，稍后继续加油！💪');
+        }
+
+        function completeTask(taskId) {
+            alert('🎉 太棒了！任务完成！\n获得 ⭐20 金币奖励！');
+        }
+
+        // --- Interaction ---
+        function pokeCharacter() {
+            const bubble = document.getElementById('home-bubble');
+            const messages = [
+                "哎哟！别戳我痒痒肉~ 😂",
+                "今天想去哪里玩？还是做任务？🚀",
+                "我的新帽子好看吗？去商城看看吧！🧢",
+                "加油！你是最棒的！💪"
+            ];
+            const randomMsg = messages[Math.floor(Math.random() * messages.length)];
+
+            bubble.style.opacity = 0;
+            setTimeout(() => {
+                bubble.querySelector('p').textContent = randomMsg;
+                bubble.style.opacity = 1;
+            }, 300);
+        }
+
+        // --- Chat / Task Flow ---
+        const chatContainer = document.getElementById('chat-container');
+        const mainInput = document.querySelector('input[type="text"]'); // Verify selector specificity if needed
+
+        // Initialize Main Input
+        // Note: The main input in the HTML body structure needs an ID or specific class to be safely selected.
+        // I'll grab the input inside the bottom-controls div.
+        const homeInput = document.querySelector('#app input');
+        if (homeInput) {
+            homeInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' && homeInput.value.trim() !== "") {
+                    startTaskFlow(homeInput.value);
+                    homeInput.value = '';
+                }
+            });
+            // Also bind the send button next to it
+            const sendBtn = homeInput.parentElement.nextElementSibling;
+            if (sendBtn) {
+                sendBtn.onclick = () => {
+                    if (homeInput.value.trim() !== "") {
+                        startTaskFlow(homeInput.value);
+                        homeInput.value = '';
+                    }
+                };
+            }
+        }
+
+        function startTaskFlow(text) {
+            openPage('chat');
+            chatContainer.innerHTML = ''; // Clear previous
+
+            addMessage('user', text);
+
+            // Determine Dialogue Script based on keywords
+            let ackMsg = '收到！正在拆解任务，请稍等... 🤖';
+            if (text.includes('阅读') || text.includes('书')) {
+                ackMsg = '📚 是阅读时间吗？太棒了！让我们一起沉浸在书海里吧~';
+            } else if (text.includes('运动') || text.includes('跑') || text.includes('跳')) {
+                ackMsg = '🏃‍♂️ 想要运动一下？很健康的选择！酷奇陪你一起动起来！';
+            } else if (text.includes('家务') || text.includes('整理') || text.includes('扫')) {
+                ackMsg = '🧹 哇！主动分担家务，你真是个懂事的好孩子！';
+            }
+
+            // AI simulating
+            setTimeout(() => {
+                addMessage('ai', ackMsg);
+
+                setTimeout(() => {
+                    const taskData = mockDecompose(text);
+                    window.lastTaskData = taskData; // Store properly
+                    showTaskCard(taskData);
+                }, 1500);
+            }, 600);
+        }
+
+        function addMessage(role, text) {
+            const div = document.createElement('div');
+            div.className = `flex w-full ${role === 'user' ? 'justify-end' : 'justify-start'}`;
+
+            let content = '';
+            if (role === 'ai') {
+                content = `
+                    <div class="w-8 h-8 rounded-full border border-gray-200 overflow-hidden mr-2 flex-shrink-0">
+                        <img src="assets/partner_kuqi_v3.png" class="w-full h-full object-cover">
+                    </div>
+                    <div class="bg-white border border-gray-100 shadow-sm px-4 py-3 rounded-2xl rounded-tl-sm text-sm text-slate-800 max-w-[80%]">
+                        ${text}
+                    </div>
+                `;
+            } else {
+                content = `
+                    <div class="bg-blue-600 px-4 py-3 rounded-2xl rounded-tr-sm text-sm text-white max-w-[80%] shadow-md">
+                        ${text}
+                    </div>
+                `;
+            }
+
+            div.innerHTML = content;
+            chatContainer.appendChild(div);
+            scrollToBottom();
+        }
+
+        function showTaskCard(data) {
+            // Remove "Thinking" message if needed, or just append
+            const div = document.createElement('div');
+            div.className = 'flex w-full justify-start';
+
+            const stepsHtml = data.steps.map((step, i) => `
+                <div class="flex gap-3 items-start p-2 rounded-lg hover:bg-gray-50">
+                    <div class="w-5 h-5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold mt-0.5">${i + 1}</div>
+                    <div class="text-sm text-slate-600">${step}</div>
+                </div>
+            `).join('');
+
+            div.innerHTML = `
+                <div class="w-8 h-8 rounded-full border border-transparent overflow-hidden mr-2 flex-shrink-0 opacity-0"></div>
+                <div class="bg-white border border-gray-100 shadow-lg w-[85%] rounded-2xl overflow-hidden animate-pop-in">
+                    <div class="bg-blue-50/50 p-4 border-b border-gray-100 flex justify-between items-center">
+                        <span class="font-bold text-slate-800">🎯 ${data.title}</span>
+                        <span class="text-xs bg-blue-100 px-2 py-0.5 rounded text-blue-600">${data.duration}</span>
+                    </div>
+                    <div class="p-4 space-y-1">
+                        ${stepsHtml}
+                    </div>
+                    <div class="p-4 pt-2 flex flex-col gap-2">
+                        <div class="flex gap-2">
+                            <button onclick="confirmTask()" class="flex-1 bg-gradient-to-r from-blue-500 to-indigo-600 py-2.5 rounded-xl font-bold text-white text-sm shadow-lg shadow-blue-500/20 active:scale-95 transition">马上开始</button>
+                            <button onclick="adjustTask()" class="flex-1 bg-gray-50 text-slate-600 border border-gray-200 py-2.5 rounded-xl font-medium text-sm hover:bg-gray-100 active:scale-95 transition">我要调整</button>
+                        </div>
+                        <button onclick="cancelTask()" class="w-full py-2 text-xs text-slate-400 hover:text-slate-600">我不想做了</button>
+                    </div>
+                </div>
+            `;
+
+            chatContainer.appendChild(div);
+            scrollToBottom();
+        }
+
+        function scrollToBottom() {
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        // --- Mock Logic ---
+        function mockDecompose(text) {
+            // Logic for specific scenarios
+            if (text.includes('画') || text.includes('画画')) {
+                return { title: '画一幅画', duration: '45分钟', steps: ['准备画纸和彩笔', '构思画面内容', '勾勒线条', '涂上颜色', '收拾画具'] };
+            } else if (text.includes('书') || text.includes('阅读')) {
+                return { title: '阅读绘本', duration: '30分钟', steps: ['挑选一本想看的书', '设定专注闹钟', '开始认真阅读', '和家长分享故事内容', '把书放回原处'] };
+            } else if (text.includes('运动')) {
+                return { title: '活力运动', duration: '15分钟', steps: ['换上运动鞋', '热身运动', '跳绳或跑步', '拉伸放松'] };
+            } else if (text.includes('家务')) {
+                return { title: '整理房间', duration: '20分钟', steps: ['把地上的玩具收进箱子', '整理书桌上的书本', '擦拭桌面灰尘', '把脏衣服放入洗衣篮'] };
+            } else {
+                return { title: text, duration: '20分钟', steps: ['第一步：准备相关物品', '第二步：专心执行任务', '第三步：检查并整理'] };
+            }
+        }
+
+        // --- Actions ---
+        function confirmTask() {
+            addMessage('user', '马上开始！');
+            setTimeout(() => {
+                addMessage('ai', '太棒了！计时开始，加油哦！⏱️');
+
+                // Get the task data from the Chat context (Mock: re-get or store globally)
+                // In a real app, 'currentTaskContext' would hold this.
+                // For prototype, we'll re-generate or assume the last one.
+                // Or better: store in a global when showing card.
+
+                setTimeout(() => {
+                    // Start Execution using the LAST mock task
+                    // Hack for prototype: retrieve title from DOM or just re-decompose current text
+                    // We'll assume the 'mockDecompose' was called on the last user text.
+                    // Ideally we pass data. For now, let's just use a sample if null.
+                    const lastUserMsg = document.querySelector('#chat-container .justify-end:last-of-type')?.textContent.trim() || '阅读';
+                    const taskData = window.lastTaskData || mockDecompose('阅读'); // Uses global
+                    startExecution(taskData);
+                }, 1000);
+            }, 500);
+        }
+
+        // --- Task Execution Logic ---
+        let execState = {
+            task: null,
+            currentStep: 0,
+            timer: 0,
+            interval: null
+        };
+
+        function startExecution(taskData) {
+            execState.task = taskData;
+            execState.currentStep = 0;
+            execState.timer = 0;
+
+            updateExecUI();
+
+            // Start Timer (Count Up)
+            if (execState.interval) clearInterval(execState.interval);
+            execState.interval = setInterval(() => {
+                execState.timer++;
+                // Format MM:SS
+                const m = Math.floor(execState.timer / 60).toString().padStart(2, '0');
+                const s = (execState.timer % 60).toString().padStart(2, '0');
+                const timerEl = document.getElementById('exec-timer');
+                if (timerEl) timerEl.textContent = `${m}:${s}`;
+            }, 1000);
+
+            openPage('execution');
+            closePage('chat');
+        }
+
+        function updateExecUI() {
+            const { task, currentStep } = execState;
+            const total = task.steps.length;
+
+            document.getElementById('exec-step-count').textContent = currentStep + 1;
+            document.getElementById('exec-total-count').textContent = total;
+            document.getElementById('exec-step-title').textContent = task.steps[currentStep];
+            document.getElementById('exec-progress-bar').style.width = `${((currentStep) / total) * 100}%`;
+        }
+
+        function completeCurrentStep() {
+            // 1. Show Celebration
+            const overlay = document.getElementById('celebration-overlay');
+            document.getElementById('cel-step-num').textContent = execState.currentStep + 1;
+            overlay.classList.remove('hidden');
+            overlay.classList.add('flex');
+
+            // Play sound effect here ideally
+
+            // 2. Wait and Advance
+            setTimeout(() => {
+                overlay.classList.add('hidden');
+                overlay.classList.remove('flex');
+
+                execState.currentStep++;
+
+                if (execState.currentStep >= execState.task.steps.length) {
+                    finishTaskComplete();
+                } else {
+                    updateExecUI();
+                    // Update progress bar to new step base
+                    document.getElementById('exec-progress-bar').style.width = `${((execState.currentStep) / execState.task.steps.length) * 100}%`;
+                }
+            }, 2000); // 2 seconds celebration
+        }
+
+        function finishTaskComplete() {
+            clearInterval(execState.interval);
+            alert(`🎉 恭喜！任务 "${execState.task.title}" 全部完成！\n总用时：${document.getElementById('exec-timer').textContent}\n奖励：🌟 +50`);
+            closePage('execution');
+            // Reset to Home
+            // Maybe add coins effect
+        }
+
+        function adjustTask() {
+            addMessage('user', '我要调整一下。');
+            setTimeout(() => {
+                addMessage('ai', '没问题，你可以在输入框告诉我你想修改哪个步骤？✍️');
+            }, 500);
+        }
+
+        function cancelTask() {
+            addMessage('user', '我不想做了。');
+            setTimeout(() => {
+                addMessage('ai', '好的，那我们休息一下，下次再来！👋');
+                setTimeout(() => closePage('chat'), 1500);
+            }, 500);
+        }
+    </script>
+</body>
+
+</html>
