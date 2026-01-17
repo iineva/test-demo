@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>PRD V2.0</title>
+
+
+<style type="text/css">
+body {
+  font-family: Helvetica, arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: white;
+  padding: 30px; }
+
+body > *:first-child {
+  margin-top: 0 !important; }
+body > *:last-child {
+  margin-bottom: 0 !important; }
+
+a {
+  color: #4183C4; }
+a.absent {
+  color: #cc0000; }
+a.anchor {
+  display: block;
+  padding-left: 30px;
+  margin-left: -30px;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0; }
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+  cursor: text;
+  position: relative; }
+
+h1:hover a.anchor, h2:hover a.anchor, h3:hover a.anchor, h4:hover a.anchor, h5:hover a.anchor, h6:hover a.anchor {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA09pVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoMTMuMCAyMDEyMDMwNS5tLjQxNSAyMDEyLzAzLzA1OjIxOjAwOjAwKSAgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OUM2NjlDQjI4ODBGMTFFMTg1ODlEODNERDJBRjUwQTQiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OUM2NjlDQjM4ODBGMTFFMTg1ODlEODNERDJBRjUwQTQiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo5QzY2OUNCMDg4MEYxMUUxODU4OUQ4M0REMkFGNTBBNCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo5QzY2OUNCMTg4MEYxMUUxODU4OUQ4M0REMkFGNTBBNCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PsQhXeAAAABfSURBVHjaYvz//z8DJYCRUgMYQAbAMBQIAvEqkBQWXI6sHqwHiwG70TTBxGaiWwjCTGgOUgJiF1J8wMRAIUA34B4Q76HUBelAfJYSA0CuMIEaRP8wGIkGMA54bgQIMACAmkXJi0hKJQAAAABJRU5ErkJggg==) no-repeat 10px center;
+  text-decoration: none; }
+
+h1 tt, h1 code {
+  font-size: inherit; }
+
+h2 tt, h2 code {
+  font-size: inherit; }
+
+h3 tt, h3 code {
+  font-size: inherit; }
+
+h4 tt, h4 code {
+  font-size: inherit; }
+
+h5 tt, h5 code {
+  font-size: inherit; }
+
+h6 tt, h6 code {
+  font-size: inherit; }
+
+h1 {
+  font-size: 28px;
+  color: black; }
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #cccccc;
+  color: black; }
+
+h3 {
+  font-size: 18px; }
+
+h4 {
+  font-size: 16px; }
+
+h5 {
+  font-size: 14px; }
+
+h6 {
+  color: #777777;
+  font-size: 14px; }
+
+p, blockquote, ul, ol, dl, li, table, pre {
+  margin: 15px 0; }
+
+hr {
+  background: transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAYAAACtBE5DAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OENDRjNBN0E2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OENDRjNBN0I2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4Q0NGM0E3ODY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4Q0NGM0E3OTY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PqqezsUAAAAfSURBVHjaYmRABcYwBiM2QSA4y4hNEKYDQxAEAAIMAHNGAzhkPOlYAAAAAElFTkSuQmCC) repeat-x 0 0;
+  border: 0 none;
+  color: #cccccc;
+  height: 4px;
+  padding: 0;
+}
+
+body > h2:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+body > h1:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+  body > h1:first-child + h2 {
+    margin-top: 0;
+    padding-top: 0; }
+body > h3:first-child, body > h4:first-child, body > h5:first-child, body > h6:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0; }
+
+h1 p, h2 p, h3 p, h4 p, h5 p, h6 p {
+  margin-top: 0; }
+
+li p.first {
+  display: inline-block; }
+li {
+  margin: 0; }
+ul, ol {
+  padding-left: 30px; }
+
+ul :first-child, ol :first-child {
+  margin-top: 0; }
+
+dl {
+  padding: 0; }
+  dl dt {
+    font-size: 14px;
+    font-weight: bold;
+    font-style: italic;
+    padding: 0;
+    margin: 15px 0 5px; }
+    dl dt:first-child {
+      padding: 0; }
+    dl dt > :first-child {
+      margin-top: 0; }
+    dl dt > :last-child {
+      margin-bottom: 0; }
+  dl dd {
+    margin: 0 0 15px;
+    padding: 0 15px; }
+    dl dd > :first-child {
+      margin-top: 0; }
+    dl dd > :last-child {
+      margin-bottom: 0; }
+
+blockquote {
+  border-left: 4px solid #dddddd;
+  padding: 0 15px;
+  color: #777777; }
+  blockquote > :first-child {
+    margin-top: 0; }
+  blockquote > :last-child {
+    margin-bottom: 0; }
+
+table {
+  padding: 0;border-collapse: collapse; }
+  table tr {
+    border-top: 1px solid #cccccc;
+    background-color: white;
+    margin: 0;
+    padding: 0; }
+    table tr:nth-child(2n) {
+      background-color: #f8f8f8; }
+    table tr th {
+      font-weight: bold;
+      border: 1px solid #cccccc;
+      margin: 0;
+      padding: 6px 13px; }
+    table tr td {
+      border: 1px solid #cccccc;
+      margin: 0;
+      padding: 6px 13px; }
+    table tr th :first-child, table tr td :first-child {
+      margin-top: 0; }
+    table tr th :last-child, table tr td :last-child {
+      margin-bottom: 0; }
+
+img {
+  max-width: 100%; }
+
+span.frame {
+  display: block;
+  overflow: hidden; }
+  span.frame > span {
+    border: 1px solid #dddddd;
+    display: block;
+    float: left;
+    overflow: hidden;
+    margin: 13px 0 0;
+    padding: 7px;
+    width: auto; }
+  span.frame span img {
+    display: block;
+    float: left; }
+  span.frame span span {
+    clear: both;
+    color: #333333;
+    display: block;
+    padding: 5px 0 0; }
+span.align-center {
+  display: block;
+  overflow: hidden;
+  clear: both; }
+  span.align-center > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px auto 0;
+    text-align: center; }
+  span.align-center span img {
+    margin: 0 auto;
+    text-align: center; }
+span.align-right {
+  display: block;
+  overflow: hidden;
+  clear: both; }
+  span.align-right > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px 0 0;
+    text-align: right; }
+  span.align-right span img {
+    margin: 0;
+    text-align: right; }
+span.float-left {
+  display: block;
+  margin-right: 13px;
+  overflow: hidden;
+  float: left; }
+  span.float-left span {
+    margin: 13px 0 0; }
+span.float-right {
+  display: block;
+  margin-left: 13px;
+  overflow: hidden;
+  float: right; }
+  span.float-right > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px auto 0;
+    text-align: right; }
+
+code, tt {
+  margin: 0 2px;
+  padding: 0 5px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px; }
+
+pre code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent; }
+
+.highlight pre {
+  background-color: #f8f8f8;
+  border: 1px solid #cccccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px; }
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #cccccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px; }
+  pre code, pre tt {
+    background-color: transparent;
+    border: none; }
+
+sup {
+    font-size: 0.83em;
+    vertical-align: super;
+    line-height: 0;
+}
+
+kbd {
+  display: inline-block;
+  padding: 3px 5px;
+  font-size: 11px;
+  line-height: 10px;
+  color: #555;
+  vertical-align: middle;
+  background-color: #fcfcfc;
+  border: solid 1px #ccc;
+  border-bottom-color: #bbb;
+  border-radius: 3px;
+  box-shadow: inset 0 -1px 0 #bbb
+}
+
+* {
+	-webkit-print-color-adjust: exact;
+}
+@media screen and (min-width: 914px) {
+    body {
+        width: 854px;
+        margin:0 auto;
+    }
+}
+@media print {
+	table, pre {
+		page-break-inside: avoid;
+	}
+	pre {
+		word-wrap: break-word;
+	}
+  body {
+    padding: 2cm; 
+  }
+}
+</style>
+
+<style type="text/css">
+/**
+ * prism.js default theme for JavaScript, CSS and HTML
+ * Based on dabblet (http://dabblet.com)
+ * @author Lea Verou
+ */
+
+code[class*="language-"],
+pre[class*="language-"] {
+	color: black;
+	background: none;
+	text-shadow: 0 1px white;
+	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+	text-align: left;
+	white-space: pre;
+	word-spacing: normal;
+	word-break: normal;
+	word-wrap: normal;
+	line-height: 1.5;
+
+	-moz-tab-size: 4;
+	-o-tab-size: 4;
+	tab-size: 4;
+
+	-webkit-hyphens: none;
+	-moz-hyphens: none;
+	-ms-hyphens: none;
+	hyphens: none;
+}
+
+pre[class*="language-"]::-moz-selection, pre[class*="language-"] ::-moz-selection,
+code[class*="language-"]::-moz-selection, code[class*="language-"] ::-moz-selection {
+	text-shadow: none;
+	background: #b3d4fc;
+}
+
+pre[class*="language-"]::selection, pre[class*="language-"] ::selection,
+code[class*="language-"]::selection, code[class*="language-"] ::selection {
+	text-shadow: none;
+	background: #b3d4fc;
+}
+
+@media print {
+	code[class*="language-"],
+	pre[class*="language-"] {
+		text-shadow: none;
+	}
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+	padding: 1em;
+	margin: .5em 0;
+	overflow: auto;
+}
+
+:not(pre) > code[class*="language-"],
+pre[class*="language-"] {
+	background: #f5f2f0;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+	padding: .1em;
+	border-radius: .3em;
+	white-space: normal;
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+	color: slategray;
+}
+
+.token.punctuation {
+	color: #999;
+}
+
+.namespace {
+	opacity: .7;
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol,
+.token.deleted {
+	color: #905;
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+	color: #690;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+	color: #a67f59;
+	background: hsla(0, 0%, 100%, .5);
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+	color: #07a;
+}
+
+.token.function {
+	color: #DD4A68;
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+	color: #e90;
+}
+
+.token.important,
+.token.bold {
+	font-weight: bold;
+}
+.token.italic {
+	font-style: italic;
+}
+
+.token.entity {
+	cursor: help;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<h1 id="toc_0">🌟 AI 儿童习惯养成助手 - 产品需求文档 (PRD)</h1>
+
+<p><strong>版本</strong>: v2.0</p>
+
+<p><strong>更新日期</strong>: 2026-01-16</p>
+
+<p><strong>产品名称</strong>: 待定（星伴/习惯星球/...）</p>
+
+<p><strong>目标平台</strong>: 微信小程序 + 服务号</p>
+
+<hr>
+
+<h2 id="toc_1">一、产品概述</h2>
+
+<h3 id="toc_2">1.1 产品定位</h3>
+
+<p>面向 <strong>8-13 岁中国儿童</strong> 的 AI 习惯养成助手，通过虚拟伙伴陪伴、AI 智能规划、游戏化激励机制，帮助儿童培养良好行为习惯，同时为家长提供任务布置和数据洞察工具。</p>
+
+<h3 id="toc_3">1.2 核心价值主张</h3>
+
+<table>
+<thead>
+<tr>
+<th>用户</th>
+<th>核心价值</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><strong>儿童</strong></td>
+<td>有趣的伙伴陪伴 + 成就感驱动的任务完成体验</td>
+</tr>
+<tr>
+<td><strong>家长</strong></td>
+<td>轻松参与孩子习惯培养 + 可视化成长数据</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="toc_4">1.3 商业模式</h3>
+
+<ul>
+<li><p><strong>订阅制收费</strong>：月度会员 ¥9.9，终身会员 ¥99</p></li>
+<li><p><strong>转化策略</strong>：免费功能勾起兴趣，付费墙与核心功能紧密结合</p></li>
+</ul>
+
+<hr>
+
+<h2 id="toc_5">二、用户账号体系</h2>
+
+<h3 id="toc_6">2.1 账号结构</h3>
+
+<div><pre><code class="language-none">
+家长主账号（微信授权）
+│
+├── 孩子角色1（昵称、性别、年龄、伙伴）
+│ ├── 任务数据
+│ ├── 星星币余额
+│ ├── 心愿币余额
+│ ├── 装饰仓库
+│
+│
+├── 孩子角色2
+│
+└── 孩子角色3（最多3个）
+</code></pre></div>
+
+<h3 id="toc_7">2.2 账号切换</h3>
+
+<div><pre><code class="language-none">1. 在设置中由家长进行切换
+2. 各个账号的数据不应该互相干扰</code></pre></div>
+
+<h2 id="toc_8">三、伙伴装饰商城系统设计</h2>
+
+<h3 id="toc_9">3.1 概述</h3>
+
+<ul>
+<li>  伙伴商城可以通过完成任务获得奖励的金币购买相应的装饰</li>
+<li>  伙伴本身有亲密度系统，通过完成任务，更换装扮等获得亲密度提升等级</li>
+<li>  不同的伙伴等级能解锁不同的装扮</li>
+<li>  装扮默认 30 天有效期，过期后可续期</li>
+</ul>
+
+<h3 id="toc_10">3.2 装饰商城</h3>
+
+<h4 id="toc_11">3.2.1 基础架构</h4>
+
+<div><pre><code class="language-none">
+├── 形象
+│ ├── 推荐
+│ ├── 会员专享
+│ ├── 普通
+│ └── 高级
+│
+├── 装扮
+│ ├── 全部
+│ ├── 会员专享
+│ ├── 头部
+│ ├── 手部
+│ ├── 面部
+│ ├── 背部
+│ └── 尾部
+│
+├── 动作——区分为通用动作与专属动作，部分动作只有某个形象才能做
+│ ├── 全部
+│ ├── 会员
+│ ├── 高级
+│ └── 普通
+
+</code></pre></div>
+
+<h4 id="toc_12">3.2.2 MCP 实现的形象</h4>
+
+<table>
+<thead>
+<tr>
+<th>代号</th>
+<th>预设名称</th>
+<th>风格</th>
+<th>形象描述</th>
+<th>适配用户</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><strong>酷奇</strong></td>
+<td>酷奇</td>
+<td>酷炫科技</td>
+<td>蓝紫色调的小狮子，带科技感护目镜和闪电纹理</td>
+<td>男孩</td>
+</tr>
+<tr>
+<td><strong>蜜桃</strong></td>
+<td>蜜桃</td>
+<td>甜美可爱</td>
+<td>粉白色调的小兔子，带蝴蝶结和星星装饰</td>
+<td>女孩</td>
+</tr>
+<tr>
+<td><strong>云团</strong></td>
+<td>云团</td>
+<td>中性萌系</td>
+<td>天蓝渐变的云朵精灵，圆润软萌</td>
+<td>不限/自选</td>
+</tr>
+</tbody>
+</table>
+
+<p>这三个形象是默认拥有，并永久有效的</p>
+
+<h3 id="toc_13">3.3 装饰购买流程</h3>
+
+<ul>
+<li>  点击装饰后直接预览</li>
+<li>  预览伙伴下直接显示 金币图标+数字（即价格）+兑换</li>
+<li>  如下图所示：</li>
+</ul>
+
+<p><img src="IMG_4660.png" alt="IMG_4660.png"></p>
+
+<ul>
+<li><p>点击兑换二次确认
+<img src="IMG_4662.png" alt="IMG_4662.png"></p></li>
+<li><p>兑换后展示商品卡片，促发分享</p></li>
+</ul>
+
+<p><img src="IMG_4663.png" alt="IMG_4663.png"></p>
+
+<ul>
+<li><p>促分享被关闭后，提醒去使用，在伙伴下方显示 去使用 按钮
+<img src="IMG_4664.png" alt="IMG_4664.png"></p></li>
+<li><p>点击 去使用 后，进入装扮管理模块，用户点击 使用 则开始使用这个装扮，详细逻辑见装扮管理</p></li>
+<li><p>此流程适合所有商城的装扮</p></li>
+</ul>
+
+<h3 id="toc_14">3.4 装扮管理</h3>
+
+<ul>
+<li><p>装扮管理还是对应的分为：形象，装扮，动作 三个类别，如图所示（暂不考虑途中的空间选项）：
+![<a href="1.png">IMG_46651.png</a></p></li>
+<li><p>每个分类下有划分为：</p>
+
+<ul>
+<li>  形象
+
+<ul>
+<li>  我的——代表在有效期内的装饰
+
+<ul>
+<li>  有一个 更多形象 的入口，点击进入商城</li>
+</ul></li>
+<li>  历史形象——曾经兑换过，但是过了有效期的形象</li>
+</ul></li>
+<li>  装扮
+
+<ul>
+<li>  我的——已购买的所有装扮
+
+<ul>
+<li>  有 更多装扮 的入口，点击进入商城的 装扮 分类下</li>
+</ul></li>
+<li>  头部——已购买的在有效期内的头部
+
+<ul>
+<li>  有 更多装扮 的入口，点击进入商城的 装扮-头部 分类下</li>
+</ul></li>
+<li>  手部——已购买的在有效期内的手部
+
+<ul>
+<li>  有 更多装扮 的入口，点击进入商城的 装扮-手部 分类下</li>
+</ul></li>
+<li>  面部——已购买的在有效期内的面部
+
+<ul>
+<li>  有 更多装扮 的入口，点击进入商城的 装扮-面部 分类下</li>
+</ul></li>
+<li>  尾部——已购买的在有效期内的尾部
+
+<ul>
+<li>  有 更多装扮 的入口，点击进入商城的 装扮-面部 分类下</li>
+</ul></li>
+<li>  历史装扮——购买过但不在有效期的所有装扮</li>
+</ul></li>
+</ul></li>
+<li><p>续期 操作</p>
+
+<ul>
+<li>  在装扮管理模块中，点击已装备的部件，显示 续期 按钮，按钮在伙伴形象下</li>
+<li>  在装备管理模块的 历史形象 以及 历史装扮 的部件，点击每一个部件，都显示 续期按钮</li>
+<li>  续期的逻辑与购买类似</li>
+</ul></li>
+<li><p>使用 操作</p>
+
+<ul>
+<li>  点击各个已购买但是未使用的部件，显示 使用 按钮</li>
+<li>  点击 使用 后即按钮即变成 续期</li>
+</ul></li>
+</ul>
+
+<h3 id="toc_15">3.5 伙伴成长体系</h3>
+
+<ul>
+<li>  伙伴的成长由不同等级构成，每个等级需要达到不同的亲密度才能升级，当前最高等级为 30 级，不同等级有不同的特权</li>
+<li>  每个等级升级时都需要有动画特效，声效</li>
+<li>  等级数值体系
+
+<ul>
+<li>  每个等级需要的亲密值= 等级数 * 100</li>
+</ul></li>
+<li>  亲密值的获得
+
+<ul>
+<li>  每日登录即可获得 10 亲密度——每日限领 1 次</li>
+<li>  点击伙伴互动，可以获得 5 亲密度——每日限领 1 次</li>
+<li>  让伙伴给规划任务，可以获得 10 亲密度——每日限领一次</li>
+<li>  给精灵换装扮，获得 50 亲密度——每周限领一次</li>
+<li>  使用做任务获得的金币购买各类形象，装扮，动作，可以获得售价 * 10 的亲密度，每天上限为 3000</li>
+</ul></li>
+<li>  等级特权
+
+<ul>
+<li>  1 级 解锁动作系统</li>
+<li>  2 级 解锁装扮系统</li>
+<li>  3 级 解锁形象兑换</li>
+<li>  4 级 奖励金币 10</li>
+<li>  5 级 奖励金币 10</li>
+<li>  6 级 奖励金币 10</li>
+<li>  7 级 解锁高级动作</li>
+<li>  8 级 解锁高级装扮</li>
+<li>  9 级 解锁高级形象</li>
+<li>  10 级 解锁稀有形象</li>
+<li>  11 级 奖励金币 10</li>
+<li>  12 级 奖励金币 10</li>
+<li>  13 级 奖励金币 15</li>
+<li>  14 级 奖励金币 15</li>
+<li>  15 级 奖励金币 15</li>
+<li>  后面每级别奖励 20 金币，可配置其他待开发特权</li>
+</ul></li>
+</ul>
+
+<h3 id="toc_16">3.6 商城数值设计</h3>
+
+<ul>
+<li>  形象数值
+
+<ul>
+<li>  普通 售价 10 金币</li>
+<li>  高级 售价 20 金币</li>
+<li>  稀有 售价 80 金币</li>
+<li>  会员 可根据不同的形象定价，只有会员可以购买</li>
+</ul></li>
+<li>  装扮数值
+
+<ul>
+<li>  普通各个部件都是 5-10 金币之间</li>
+<li>  高级各个部件在 10 到 20 金币之间</li>
+<li>  会员专享 不同部件不同定价</li>
+</ul></li>
+<li><p>动作数值</p>
+
+<ul>
+<li>  普通动作解锁后都可以装配上</li>
+<li>  高级动作需要金币购买，价格 15 金币，动作属性永久拥有</li>
+<li>  会员动作 20 金币左右，不需要</li>
+<li>  动作都可以装配上，显示在装扮管理页面如图
+
+<ul>
+<li>  普通用户只有 3 槽位</li>
+<li>  会员用户无限槽位</li>
+</ul></li>
+<li>  当用户点击首页的伙伴形象时，即会随机触发已装备的动作</li>
+</ul>
+
+<p><img src="IMG_4671.png" alt="IMG_4671.png"></p></li>
+</ul>
+
+<hr>
+
+<h2 id="toc_17">四、任务系统设计</h2>
+
+<h3 id="toc_18">4.1 任务类型</h3>
+
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>来源</th>
+<th>完成验证</th>
+<th>奖励货币</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><strong>AI 任务</strong></td>
+<td>伙伴根据孩子目标规划</td>
+<td>孩子自我打卡</td>
+<td>🌟 金币</td>
+</tr>
+<tr>
+<td><strong>家长任务</strong></td>
+<td>家长手动布置</td>
+<td>家长确认</td>
+<td>💎 心愿币</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="toc_19">4.2 AI 目标拆解逻辑</h3>
+
+<div><pre><code class="language-none">
+用户输入目标
+
+│
+├── 判断：短目标 or 长目标？
+│
+├── 【短目标】预计30分钟内可完成
+│ └── 直接拆解为2-5个步骤
+│
+└── 【长目标】需要多天完成
+│
+├── AI追问细节（时间、频率、现有水平等）
+│
+└── 生成分阶段规划
+├── 阶段1（免费可见）
+├── 阶段2（付费可见）🔒
+└── 阶段N...
+</code></pre></div>
+
+<h3 id="toc_20">4.3 任务奖励数值</h3>
+
+<table>
+<thead>
+<tr>
+<th>任务类型</th>
+<th>星星币奖励</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>简单任务（&lt;30 分钟）</td>
+<td>5-10 🌟</td>
+</tr>
+<tr>
+<td>中等任务（30 分钟-2 小时）</td>
+<td>15-30 🌟</td>
+</tr>
+<tr>
+<td>困难任务（长期目标阶段）</td>
+<td>50-100 🌟</td>
+</tr>
+<tr>
+<td>长期目标最终完成</td>
+<td>200-500 🌟</td>
+</tr>
+</tbody>
+</table>
+
+<hr>
+
+<h2 id="toc_21">五、货币经济系统</h2>
+
+<h3 id="toc_22">5.1 双货币体系</h3>
+
+<table>
+<thead>
+<tr>
+<th>货币</th>
+<th>名称</th>
+<th>获取方式</th>
+<th>使用范围</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>🌟</td>
+<td>金币</td>
+<td>完成 AI 伙伴规划的任务</td>
+<td>装扮伙伴、解锁表情</td>
+</tr>
+<tr>
+<td>💎</td>
+<td>心愿币</td>
+<td>完成家长布置的任务</td>
+<td>兑换家长设置的奖励</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="toc_23">5.2 金币装扮商城定价</h3>
+
+<p>见 3.5</p>
+
+<h3 id="toc_24">5.3 心愿币经济</h3>
+
+<ul>
+<li>  家长自行设置任务奖励值和商品价格</li>
+<li>  平台提供参考定价（如：洗碗=10💎，看电视 1 小时=30💎）</li>
+<li>  孩子可见商品价格，明确目标</li>
+<li>  兑换需要家长确认</li>
+</ul>
+
+<hr>
+
+<h2 id="toc_25">六、付费策略设计</h2>
+
+<h3 id="toc_26">6.1 定价方案</h3>
+
+<table>
+<thead>
+<tr>
+<th>套餐</th>
+<th>价格</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>月度会员</td>
+<td>¥9.9/月（自动续费）</td>
+</tr>
+<tr>
+<td>终身会员</td>
+<td>¥99（一次性）</td>
+</tr>
+<tr>
+<td>首月特惠</td>
+<td>¥1/首月（新用户）MVP 阶段不实现</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="toc_27">6.2 免费 vs 付费权益</h3>
+
+<table>
+<thead>
+<tr>
+<th>功能</th>
+<th>免费用户</th>
+<th>付费用户</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>短目标规划</td>
+<td>每日 2 次</td>
+<td>无限</td>
+</tr>
+<tr>
+<td>长目标规划</td>
+<td>仅显示第 1 阶段</td>
+<td>完整规划</td>
+</tr>
+<tr>
+<td>伙伴进化</td>
+<td>无影响</td>
+<td>无影响</td>
+</tr>
+<tr>
+<td>装饰槽位</td>
+<td>3 个基础槽</td>
+<td>无限槽位</td>
+</tr>
+<tr>
+<td>专属装饰</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>家长 AI 报告</td>
+<td>总共 2 次</td>
+<td>无限</td>
+</tr>
+<tr>
+<td>家长任务发布</td>
+<td>每日 3 个</td>
+<td>无限</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="toc_28">6.3 付费验证流程</h3>
+
+<div><pre><code class="language-none">
+点击付费按钮
+
+↓
+
+弹出数学题（如：47 × 23 = ？）
+
+↓
+
+答对 → 调用微信支付
+
+↓
+
+支付成功 → 标记&quot;已验证&quot;
+
+↓
+
+后续付费 → 直接支付，无需再次验证
+</code></pre></div>
+
+<hr>
+
+<h2 id="toc_29">七、一级页面信息架构</h2>
+
+<h3 id="toc_30">7.1 首页（伙伴对话）</h3>
+
+<p>首页为主要承载，展现伙伴的虚拟形象，同时也承载了各个功能的入口
+| 模块 | 功能 |
+|------|------|
+| 伙伴形象 | 大尺寸展示，点击有互动动画，随机展示动作 |
+| 对话气泡 | 引导语：&quot;今天想完成什么目标呀？&quot; |
+| 快捷入口标签 | 伙伴下方， 学习、运动、阅读、家务等引导用户快速开始任务 |
+| 输入区 | 文字框 + 语音按钮（微信原生） |
+| 等级数值 | 在伙伴形象下显示，有一个亲密度的进度条，展示已有数值与目标数值，点击进入亲密度说明 |
+| 任务 | 最下方居中，点击进入任务二级页，显示待执行的任务数 |
+| 商城 | 最下方居右，与商城平行，点击进入装饰商城 |
+| 装扮 | 最下方居左，与 任务，商城 平行，单击进入装扮管理模块 |
+| 设置 | 左上角，点击进入设置页 |
+| 亲密值气泡 | 当产生了新的亲密度时，气泡悬浮在伙伴的左偏上方 |</p>
+
+<p>首页风格参考图如下：</p>
+
+<p>![IMG_4672.png]</p>
+
+<h3 id="toc_31">7.3 任务页</h3>
+
+<table>
+<thead>
+<tr>
+<th>模块</th>
+<th>功能</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>今日任务</td>
+<td>分类：AI 任务 / 家长任务</td>
+</tr>
+<tr>
+<td>任务卡片</td>
+<td>名称、时间、奖励、状态</td>
+</tr>
+<tr>
+<td>进行中目标</td>
+<td>长期目标进度条</td>
+</tr>
+<tr>
+<td>家长任务</td>
+<td>显示来自家长布置的任务</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="toc_32">7.4 商城页 ——见 三、伙伴装饰商城系统设计</h3>
+
+<h3 id="toc_33">7.5 设置</h3>
+
+<table>
+<thead>
+<tr>
+<th>模块</th>
+<th>功能</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>用户信息</td>
+<td>角色头像、昵称、会员状态</td>
+</tr>
+<tr>
+<td>角色切换</td>
+<td>切换其他孩子</td>
+</tr>
+<tr>
+<td>数据统计</td>
+<td>累计任务、星星币、活跃天数</td>
+</tr>
+<tr>
+<td>家长设置</td>
+<td>🔒 数学题验证进入</td>
+</tr>
+<tr>
+<td>会员中心</td>
+<td>购买/续费</td>
+</tr>
+<tr>
+<td>设置</td>
+<td>通知、音效、关于</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="toc_34">7.6 家长管理中心</h3>
+
+<div><pre><code class="language-none">
+├── 📊 数据报告
+│ ├── 本周任务完成统计
+│ ├── AI分析与建议（会员/限次）
+│ └── 历史数据趋势
+│
+├── 📝 任务管理
+│ ├── 发布新任务
+│ ├── 待确认任务
+│ └── 任务历史
+│
+├── 🎁 奖励管理
+│ ├── 设置心愿商品
+│ ├── 兑换审核
+│ └── 兑换记录
+│
+├── 👶 孩子管理
+│ ├── 添加/编辑/删除角色
+│ └── 每个孩子的设置
+│
+└── ⚙️ 系统设置
+├── 通知推送设置
+└── 账号与安全
+</code></pre></div>
+
+<hr>
+
+<h2 id="toc_35">八、音效与反馈设计</h2>
+
+<h3 id="toc_36">8.1 音效触发场景</h3>
+
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>音效类型</th>
+<th>描述</th>
+<th>时长</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>任务完成</td>
+<td>🎉 欢庆</td>
+<td>叮咚+撒花</td>
+<td>1-2 秒</td>
+</tr>
+<tr>
+<td>获得金币币</td>
+<td>✨ 收集</td>
+<td>硬币叮当</td>
+<td>0.5 秒</td>
+</tr>
+<tr>
+<td>伙伴升级</td>
+<td>🌟 史诗</td>
+<td>升级宏大音效</td>
+<td>2-3 秒</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="toc_37">8.2 音效设计原则</h3>
+
+<ol>
+<li><p><strong>正向激励为主</strong>：成功愉悦，失败温和不挫败</p></li>
+<li><p><strong>可控性</strong>：设置中提供音效开关，默认开启</p></li>
+<li><p><strong>风格统一</strong>：整体可爱明快，与伙伴风格匹配</p></li>
+<li><p><strong>性能优化</strong>：单个音效&lt;50KB，预加载常用音效</p></li>
+</ol>
+
+<h3 id="toc_38">8.3 伙伴互动动效</h3>
+
+<table>
+<thead>
+<tr>
+<th>交互</th>
+<th>视觉</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>点击伙伴</td>
+<td>随机动作，</td>
+</tr>
+<tr>
+<td>完成任务</td>
+<td>鼓掌+撒花</td>
+</tr>
+<tr>
+<td>升级成功</td>
+<td>欢庆的动作</td>
+</tr>
+</tbody>
+</table>
+
+<hr>
+
+<h2 id="toc_39">九、服务号推送设计 MVP 不实现</h2>
+
+<h3 id="toc_40">9.1 推送类型</h3>
+
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>触发时机</th>
+<th>推送对象</th>
+<th>内容示例</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>每日日报</td>
+<td>每晚 20:00</td>
+<td>家长</td>
+<td>&quot;今日{孩子}完成{N}个任务，获得{X}🌟&quot;</td>
+</tr>
+<tr>
+<td>每周周报</td>
+<td>周日 20:00</td>
+<td>家长</td>
+<td>&quot;本周报告已生成，查看成长轨迹&quot;</td>
+</tr>
+<tr>
+<td>任务完成</td>
+<td>实时</td>
+<td>家长</td>
+<td>&quot;{孩子}完成了「{任务名}」，快确认！&quot;</td>
+</tr>
+<tr>
+<td>会员到期提醒</td>
+<td>到期前 3 天</td>
+<td>家长</td>
+<td>&quot;会员将于{日期}到期，续费享优惠&quot;</td>
+</tr>
+<tr>
+<td>会员到期通知</td>
+<td>到期当天</td>
+<td>家长</td>
+<td>&quot;会员已到期，续费继续享完整功能&quot;</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="toc_41">9.2 推送频控</h3>
+
+<ul>
+<li>  日报：仅当天有活动时推送</li>
+<li>  任务通知：5 分钟内多任务合并</li>
+<li>  勿扰时段：22:00-08:00 不推送</li>
+</ul>
+
+<hr>
+
+<h2 id="toc_42">十、新用户引导流程</h2>
+
+<div><pre><code class="language-none">Step 1: 微信授权登录
+↓
+Step 2: 身份选择
+[我是小朋友👦] [我是家长👨]
+↓
+Step 3: 输入昵称
+↓
+Step 4: 选择性别
+[男生🦁] [女生🐰] [保密🌈]
+↓
+Step 5: 选择年龄
+[8岁] [9岁] ... [13岁]
+↓
+Step 6: 伙伴匹配动画
+&quot;正在为你寻找专属伙伴...&quot;
+↓
+Step 7: 伙伴出场（破壳动画+音效）
+&quot;你好！我是{伙伴名}，很高兴认识你！&quot;
+↓
+Step 8: 第一个引导任务
+&quot;告诉我你最想完成的一件事吧！&quot;</code></pre></div>
+
+<hr>
+
+<h2 id="toc_43">十一、MVP 功能范围</h2>
+
+<h3 id="toc_44">✅ MVP 包含</h3>
+
+<ul>
+<li>  [x] 账号体系（家长+3 孩子角色）</li>
+<li>  [x] 3 款伙伴形象</li>
+<li>  [x] 5 阶段进化（免费前 3 阶段）</li>
+<li>  [x] AI 目标拆解（短目标+长目标部分）</li>
+<li>  [x] 双货币系统</li>
+<li>  [x] 任务管理（AI 任务+家长任务）</li>
+<li>  [x] 装扮商城（3 基础槽位）</li>
+<li>  [x] 付费系统（数学题验证）</li>
+<li>  [x] 家长管理中心基础功能</li>
+<li>  [x] 服务号推送（日报/周报/任务/会员）</li>
+<li>  [x] 音效反馈系统</li>
+<li>  [x] 语音输入（微信原生）</li>
+</ul>
+
+<h3 id="toc_45">❌ MVP 不包含</h3>
+
+<ul>
+<li>  [ ] 成就/徽章系统</li>
+<li>  [ ] 伙伴自定义命名</li>
+<li>  [ ] 多家长绑定同一孩子</li>
+<li>  [ ] 家长入口身份验证</li>
+<li>  [ ] 任务照片/视频验证</li>
+<li>  [ ] 社交/排行榜功能</li>
+</ul>
+
+<hr>
+
+<h2 id="toc_46">十二、后续规划（待定）</h2>
+
+<table>
+<thead>
+<tr>
+<th>版本</th>
+<th>预计功能</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>v1.2</td>
+<td>成就系统、徽章墙</td>
+</tr>
+<tr>
+<td>v1.3</td>
+<td>多家长绑定、权限管理</td>
+</tr>
+<tr>
+<td>v1.4</td>
+<td>任务多媒体验证</td>
+</tr>
+<tr>
+<td>v2.0</td>
+<td>伙伴分支进化路线</td>
+</tr>
+</tbody>
+</table>
+
+<hr>
+
+<p><strong>文档版本历史</strong></p>
+
+<table>
+<thead>
+<tr>
+<th>版本</th>
+<th>日期</th>
+<th>更新内容</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>v1.0</td>
+<td>2026-01-10</td>
+<td>初稿</td>
+</tr>
+<tr>
+<td>v1.1</td>
+<td>2026-01-10</td>
+<td>新增音效设计、装饰槽位、服务号推送细节</td>
+</tr>
+</tbody>
+</table>
+
+
+
+<script type="text/javascript">
+var _self="undefined"!=typeof window?window:"undefined"!=typeof WorkerGlobalScope&&self instanceof WorkerGlobalScope?self:{},Prism=function(){var e=/\blang(?:uage)?-(\w+)\b/i,t=0,n=_self.Prism={util:{encode:function(e){return e instanceof a?new a(e.type,n.util.encode(e.content),e.alias):"Array"===n.util.type(e)?e.map(n.util.encode):e.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/\u00a0/g," ")},type:function(e){return Object.prototype.toString.call(e).match(/\[object (\w+)\]/)[1]},objId:function(e){return e.__id||Object.defineProperty(e,"__id",{value:++t}),e.__id},clone:function(e){var t=n.util.type(e);switch(t){case"Object":var a={};for(var r in e)e.hasOwnProperty(r)&&(a[r]=n.util.clone(e[r]));return a;case"Array":return e.map&&e.map(function(e){return n.util.clone(e)})}return e}},languages:{extend:function(e,t){var a=n.util.clone(n.languages[e]);for(var r in t)a[r]=t[r];return a},insertBefore:function(e,t,a,r){r=r||n.languages;var l=r[e];if(2==arguments.length){a=arguments[1];for(var i in a)a.hasOwnProperty(i)&&(l[i]=a[i]);return l}var o={};for(var s in l)if(l.hasOwnProperty(s)){if(s==t)for(var i in a)a.hasOwnProperty(i)&&(o[i]=a[i]);o[s]=l[s]}return n.languages.DFS(n.languages,function(t,n){n===r[e]&&t!=e&&(this[t]=o)}),r[e]=o},DFS:function(e,t,a,r){r=r||{};for(var l in e)e.hasOwnProperty(l)&&(t.call(e,l,e[l],a||l),"Object"!==n.util.type(e[l])||r[n.util.objId(e[l])]?"Array"!==n.util.type(e[l])||r[n.util.objId(e[l])]||(r[n.util.objId(e[l])]=!0,n.languages.DFS(e[l],t,l,r)):(r[n.util.objId(e[l])]=!0,n.languages.DFS(e[l],t,null,r)))}},plugins:{},highlightAll:function(e,t){var a={callback:t,selector:'code[class*="language-"], [class*="language-"] code, code[class*="lang-"], [class*="lang-"] code'};n.hooks.run("before-highlightall",a);for(var r,l=a.elements||document.querySelectorAll(a.selector),i=0;r=l[i++];)n.highlightElement(r,e===!0,a.callback)},highlightElement:function(t,a,r){for(var l,i,o=t;o&&!e.test(o.className);)o=o.parentNode;o&&(l=(o.className.match(e)||[,""])[1],i=n.languages[l]),t.className=t.className.replace(e,"").replace(/\s+/g," ")+" language-"+l,o=t.parentNode,/pre/i.test(o.nodeName)&&(o.className=o.className.replace(e,"").replace(/\s+/g," ")+" language-"+l);var s=t.textContent,u={element:t,language:l,grammar:i,code:s};if(!s||!i)return n.hooks.run("complete",u),void 0;if(n.hooks.run("before-highlight",u),a&&_self.Worker){var c=new Worker(n.filename);c.onmessage=function(e){u.highlightedCode=e.data,n.hooks.run("before-insert",u),u.element.innerHTML=u.highlightedCode,r&&r.call(u.element),n.hooks.run("after-highlight",u),n.hooks.run("complete",u)},c.postMessage(JSON.stringify({language:u.language,code:u.code,immediateClose:!0}))}else u.highlightedCode=n.highlight(u.code,u.grammar,u.language),n.hooks.run("before-insert",u),u.element.innerHTML=u.highlightedCode,r&&r.call(t),n.hooks.run("after-highlight",u),n.hooks.run("complete",u)},highlight:function(e,t,r){var l=n.tokenize(e,t);return a.stringify(n.util.encode(l),r)},tokenize:function(e,t){var a=n.Token,r=[e],l=t.rest;if(l){for(var i in l)t[i]=l[i];delete t.rest}e:for(var i in t)if(t.hasOwnProperty(i)&&t[i]){var o=t[i];o="Array"===n.util.type(o)?o:[o];for(var s=0;s<o.length;++s){var u=o[s],c=u.inside,g=!!u.lookbehind,h=!!u.greedy,f=0,d=u.alias;u=u.pattern||u;for(var p=0;p<r.length;p++){var m=r[p];if(r.length>e.length)break e;if(!(m instanceof a)){u.lastIndex=0;var y=u.exec(m),v=1;if(!y&&h&&p!=r.length-1){var b=r[p+1].matchedStr||r[p+1],k=m+b;if(p<r.length-2&&(k+=r[p+2].matchedStr||r[p+2]),u.lastIndex=0,y=u.exec(k),!y)continue;var w=y.index+(g?y[1].length:0);if(w>=m.length)continue;var _=y.index+y[0].length,P=m.length+b.length;if(v=3,P>=_){if(r[p+1].greedy)continue;v=2,k=k.slice(0,P)}m=k}if(y){g&&(f=y[1].length);var w=y.index+f,y=y[0].slice(f),_=w+y.length,S=m.slice(0,w),O=m.slice(_),j=[p,v];S&&j.push(S);var A=new a(i,c?n.tokenize(y,c):y,d,y,h);j.push(A),O&&j.push(O),Array.prototype.splice.apply(r,j)}}}}}return r},hooks:{all:{},add:function(e,t){var a=n.hooks.all;a[e]=a[e]||[],a[e].push(t)},run:function(e,t){var a=n.hooks.all[e];if(a&&a.length)for(var r,l=0;r=a[l++];)r(t)}}},a=n.Token=function(e,t,n,a,r){this.type=e,this.content=t,this.alias=n,this.matchedStr=a||null,this.greedy=!!r};if(a.stringify=function(e,t,r){if("string"==typeof e)return e;if("Array"===n.util.type(e))return e.map(function(n){return a.stringify(n,t,e)}).join("");var l={type:e.type,content:a.stringify(e.content,t,r),tag:"span",classes:["token",e.type],attributes:{},language:t,parent:r};if("comment"==l.type&&(l.attributes.spellcheck="true"),e.alias){var i="Array"===n.util.type(e.alias)?e.alias:[e.alias];Array.prototype.push.apply(l.classes,i)}n.hooks.run("wrap",l);var o="";for(var s in l.attributes)o+=(o?" ":"")+s+'="'+(l.attributes[s]||"")+'"';return"<"+l.tag+' class="'+l.classes.join(" ")+'" '+o+">"+l.content+"</"+l.tag+">"},!_self.document)return _self.addEventListener?(_self.addEventListener("message",function(e){var t=JSON.parse(e.data),a=t.language,r=t.code,l=t.immediateClose;_self.postMessage(n.highlight(r,n.languages[a],a)),l&&_self.close()},!1),_self.Prism):_self.Prism;var r=document.currentScript||[].slice.call(document.getElementsByTagName("script")).pop();return r&&(n.filename=r.src,document.addEventListener&&!r.hasAttribute("data-manual")&&document.addEventListener("DOMContentLoaded",n.highlightAll)),_self.Prism}();"undefined"!=typeof module&&module.exports&&(module.exports=Prism),"undefined"!=typeof global&&(global.Prism=Prism);
+</script>
+
+
+</body>
+
+</html>
