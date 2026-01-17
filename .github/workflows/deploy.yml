@@ -22,7 +22,8 @@ jobs:
 
       # copy files to the 'dist' folder
       - run: mkdir -p dist
-      - run: cp -rf * dist/
+      - run: cp -rf star-companion dist/star-companion
+      - run: cp -rf prd-2.0 dist/prd-2.0
 
       - uses: actions/upload-pages-artifact@v3
         with:
