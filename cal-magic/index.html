@@ -454,7 +454,7 @@
 
     function currentYYMMDDHHmm() {
       const d = new Date();
-      d.setMinutes(d.getMinutes() + 1);
+      d.setMinutes(d.getMinutes() + (d.getSeconds() > 50 ? 1 : 0));
       const yy = String(d.getFullYear() % 100).padStart(2, '0');
       const mm = String(d.getMonth() + 1).padStart(2, '0');
       const dd = String(d.getDate()).padStart(2, '0');
