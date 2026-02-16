@@ -1,0 +1,565 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="theme-color" content="#000000" />
+  <title>表演计算器</title>
+  <style>
+    :root {
+      --bg: #000;
+      --num: #333;
+      --num-active: #555;
+      --func: #a5a5a5;
+      --func-active: #d4d4d2;
+      --op: #ff9f0a;
+      --op-active: #ffbe66;
+      --text: #fff;
+      --text-dark: #000;
+      --muted: #888;
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    * { -webkit-user-select: none; user-select: none; }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: #000;
+      overflow: hidden;
+      overscroll-behavior: none;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100dvh;
+      display: grid;
+      place-items: center;
+      background: #000;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", "Helvetica Neue", sans-serif;
+      color: var(--text);
+      touch-action: manipulation;
+      position: fixed;
+      inset: 0;
+    }
+
+    .phone {
+      width: min(92vw, 390px);
+      border-radius: 46px;
+      background: #111;
+      padding: 14px;
+      box-shadow: 0 25px 80px rgba(0,0,0,.65);
+    }
+
+    .screen {
+      border-radius: 34px;
+      background: var(--bg);
+      padding: 18px;
+      min-height: 720px;
+      max-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      overflow: hidden;
+    }
+
+    .status {
+      height: 22px;
+      font-size: 13px;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .display-wrap {
+      padding: 34px 6px 14px;
+      min-height: 170px;
+      display: grid;
+      align-items: end;
+    }
+
+    .display {
+      font-size: clamp(44px, 11vw, 76px);
+      font-weight: 400;
+      text-align: right;
+      letter-spacing: -0.02em;
+      line-height: 1.08;
+      overflow: hidden;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+    .display.current-only {
+      font-size: clamp(48px, 12.1vw, 84px);
+      font-weight: 700;
+    }
+    .display .expr-left {
+      display: block;
+      font-size: 0.86em;
+      opacity: 0.9;
+      line-height: 1.05;
+      font-weight: 400;
+    }
+    .display .expr-right {
+      display: block;
+      font-size: 1.1em;
+      line-height: 1.08;
+      font-weight: 700;
+    }
+
+    .keys {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: auto;
+    }
+
+    button {
+      border: 0;
+      border-radius: 999px;
+      height: 74px;
+      font-size: 36px;
+      font-weight: 400;
+      color: var(--text);
+      background: var(--num);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    button:active { transform: scale(.97); }
+    .fn { background: var(--func); color: var(--text-dark); }
+    .op { background: var(--op); }
+    .num:active { background: var(--num-active); }
+    .fn:active { background: var(--func-active); }
+    .op:active { background: var(--op-active); }
+    .zero { grid-column: span 2; text-align: left; padding-left: 30px; }
+
+    .panel {
+      margin-top: 10px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+      font-size: 13px;
+      color: #bbb;
+    }
+
+    .panel button {
+      height: 34px;
+      font-size: 13px;
+      border-radius: 10px;
+      padding: 0 12px;
+      background: #1f1f1f;
+      color: #ddd;
+    }
+
+    .badge {
+      border-radius: 999px;
+      padding: 4px 10px;
+      background: #1b1b1b;
+    }
+
+    .ok { color: #6ddf75; }
+    .warn { color: #f5c05a; }
+
+    @media (max-width: 420px) {
+      .phone { width: 100vw; border-radius: 0; padding: 0; }
+      .screen {
+        border-radius: 0;
+        min-height: 100dvh;
+        padding-top: calc(18px + env(safe-area-inset-top));
+        padding-bottom: calc(24px + env(safe-area-inset-bottom));
+        padding-left: calc(18px + env(safe-area-inset-left));
+        padding-right: calc(18px + env(safe-area-inset-right));
+      }
+      button { height: 70px; font-size: 38px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="phone">
+    <section class="screen" id="touchArea">
+      <div class="status">
+        <span>表演模式</span>
+        <span id="orientationText">模式: 常规</span>
+      </div>
+
+      <div class="display-wrap">
+        <div class="display" id="display">0</div>
+      </div>
+
+      <div class="keys" id="keys">
+        <button class="fn" data-action="clear">AC</button>
+        <button class="fn" data-action="sign">+/-</button>
+        <button class="fn" data-action="percent">%</button>
+        <button class="op" data-action="operator" data-value="/">÷</button>
+
+        <button class="num" data-action="digit" data-value="7">7</button>
+        <button class="num" data-action="digit" data-value="8">8</button>
+        <button class="num" data-action="digit" data-value="9">9</button>
+        <button class="op" data-action="operator" data-value="*">×</button>
+
+        <button class="num" data-action="digit" data-value="4">4</button>
+        <button class="num" data-action="digit" data-value="5">5</button>
+        <button class="num" data-action="digit" data-value="6">6</button>
+        <button class="op" data-action="operator" data-value="-">−</button>
+
+        <button class="num" data-action="digit" data-value="1">1</button>
+        <button class="num" data-action="digit" data-value="2">2</button>
+        <button class="num" data-action="digit" data-value="3">3</button>
+        <button class="op" data-action="operator" data-value="+">+</button>
+
+        <button class="num zero" data-action="digit" data-value="0">0</button>
+        <button class="num" data-action="dot">.</button>
+        <button class="op" data-action="equal">=</button>
+      </div>
+
+      <div class="panel">
+        <button id="motionBtn">切换到表演模式</button>
+        <span class="badge" id="stateText">状态: 常规输入</span>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const displayEl = document.getElementById('display');
+    const keysEl = document.getElementById('keys');
+    const touchArea = document.getElementById('touchArea');
+    const motionBtn = document.getElementById('motionBtn');
+    const orientationText = document.getElementById('orientationText');
+    const stateText = document.getElementById('stateText');
+
+    const state = {
+      display: '0',
+      previous: null,
+      operator: null,
+      waitingForNext: false,
+      performanceMode: false,
+      performanceApplied: false,
+      gravityBaseSign: null,
+      isFaceDown: false,
+      motionReady: false
+    };
+
+    function formatNumber(n) {
+      if (!Number.isFinite(n)) return '错误';
+      const text = String(n);
+      if (text.length <= 12) return text;
+      return Number(n).toPrecision(10).replace(/\.0+$|(?<=\..*?)0+$/, '');
+    }
+
+    function getDisplayNumber() {
+      return Number(state.display);
+    }
+
+    function operatorSymbol(op) {
+      if (op === '/') return '÷';
+      if (op === '*') return '×';
+      if (op === '-') return '−';
+      if (op === '+') return '+';
+      return '';
+    }
+
+    function getDisplayText() {
+      if (state.operator && state.previous !== null) {
+        const left = formatNumber(state.previous);
+        const op = operatorSymbol(state.operator);
+        if (state.waitingForNext) {
+          return `${left}${op}`;
+        }
+        return `${left}${op}\n${state.display}`;
+      }
+      return state.display;
+    }
+
+    function escapeHtml(text) {
+      return String(text)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#39;');
+    }
+
+    function updateDisplay() {
+      if (state.operator && state.previous !== null && !state.waitingForNext) {
+        const left = `${formatNumber(state.previous)}${operatorSymbol(state.operator)}`;
+        const right = state.display;
+        displayEl.classList.remove('current-only');
+        displayEl.innerHTML = `<span class="expr-left">${escapeHtml(left)}</span><span class="expr-right">${escapeHtml(right)}</span>`;
+        return;
+      }
+      displayEl.classList.add('current-only');
+      displayEl.textContent = getDisplayText();
+    }
+
+    function updateClearKey() {
+      const clearBtn = keysEl.querySelector('[data-action="clear"]');
+      clearBtn.textContent = state.display === '0' && state.previous === null ? 'AC' : 'C';
+    }
+
+    function setStateLabel() {
+      if (state.performanceMode) {
+        stateText.innerHTML = '状态: <span class="warn">表演自动输入已启用</span>';
+        orientationText.textContent = state.isFaceDown ? '模式: 表演(倒扣触发)' : '模式: 表演';
+        motionBtn.textContent = '切换到常规模式';
+      } else {
+        stateText.innerHTML = '状态: <span class="ok">常规输入</span>';
+        orientationText.textContent = state.motionReady ? '模式: 常规(重力监听中)' : '模式: 常规';
+        motionBtn.textContent = '切换到表演模式';
+      }
+    }
+
+    function specialInputEnabled() {
+      return state.performanceMode;
+    }
+
+    function ensurePlusOperatorForPerformance() {
+      if (state.operator !== null) return;
+      inputOperator('+');
+    }
+
+    function toggleMode() {
+      enableMotionTrackingFromGesture();
+      state.performanceMode = !state.performanceMode;
+      if (state.performanceMode) {
+        state.performanceApplied = false;
+        ensurePlusOperatorForPerformance();
+      }
+      setStateLabel();
+    }
+
+    function activatePerformanceModeByFaceDown() {
+      if (state.performanceMode) return;
+      state.performanceMode = true;
+      state.performanceApplied = false;
+      ensurePlusOperatorForPerformance();
+      setStateLabel();
+    }
+
+    function clearAll() {
+      state.display = '0';
+      state.previous = null;
+      state.operator = null;
+      state.waitingForNext = false;
+      updateDisplay();
+      updateClearKey();
+    }
+
+    function inputDigit(d) {
+      if (state.waitingForNext) {
+        state.display = d;
+        state.waitingForNext = false;
+      } else {
+        state.display = state.display === '0' ? d : state.display + d;
+      }
+      updateDisplay();
+      updateClearKey();
+    }
+
+    function inputDot() {
+      if (state.waitingForNext) {
+        state.display = '0.';
+        state.waitingForNext = false;
+      } else if (!state.display.includes('.')) {
+        state.display += '.';
+      }
+      updateDisplay();
+      updateClearKey();
+    }
+
+    function toggleSign() {
+      if (state.display === '0') return;
+      state.display = state.display.startsWith('-') ? state.display.slice(1) : '-' + state.display;
+      updateDisplay();
+    }
+
+    function percent() {
+      const value = getDisplayNumber() / 100;
+      state.display = formatNumber(value);
+      updateDisplay();
+      updateClearKey();
+    }
+
+    function calc(a, b, op) {
+      if (op === '+') return a + b;
+      if (op === '-') return a - b;
+      if (op === '*') return a * b;
+      if (op === '/') return b === 0 ? NaN : a / b;
+      return b;
+    }
+
+    function inputOperator(nextOp) {
+      const inputValue = getDisplayNumber();
+
+      if (state.previous === null) {
+        state.previous = inputValue;
+      } else if (state.operator && !state.waitingForNext) {
+        const result = calc(state.previous, inputValue, state.operator);
+        state.previous = result;
+        state.display = formatNumber(result);
+        updateDisplay();
+      }
+
+      state.operator = nextOp;
+      state.waitingForNext = true;
+      updateDisplay();
+      updateClearKey();
+    }
+
+    function equals() {
+      if (!state.operator || state.previous === null) return;
+      const inputValue = getDisplayNumber();
+      const result = calc(state.previous, inputValue, state.operator);
+      state.display = formatNumber(result);
+      state.previous = null;
+      state.operator = null;
+      state.waitingForNext = true;
+      updateDisplay();
+      updateClearKey();
+    }
+
+    function enterSequence(sequence) {
+      let next = sequence.trim();
+      if (!next) return;
+      next = next.replace(/[^\d.-]/g, '');
+      if (!next || next === '-' || next === '.') return;
+
+      state.display = '0';
+      state.previous = null;
+      state.operator = null;
+      state.waitingForNext = false;
+
+      for (const ch of next) {
+        if (ch >= '0' && ch <= '9') inputDigit(ch);
+        else if (ch === '.') inputDot();
+        else if (ch === '-') toggleSign();
+      }
+    }
+
+    function currentYYMMDDHHmm() {
+      const d = new Date();
+      const yy = String(d.getFullYear() % 100).padStart(2, '0');
+      const mm = String(d.getMonth() + 1).padStart(2, '0');
+      const dd = String(d.getDate()).padStart(2, '0');
+      const hh = String(d.getHours()).padStart(2, '0');
+      const mi = String(d.getMinutes()).padStart(2, '0');
+      return yy + mm + dd + hh + mi;
+    }
+
+    function parseDisplayToBigInt(text) {
+      const raw = String(text).trim();
+      if (!raw) return 0n;
+
+      if (/^-?\d+$/.test(raw)) {
+        return BigInt(raw);
+      }
+
+      // If the display has decimals, truncate toward zero for integer subtraction.
+      if (/^-?\d+\.\d+$/.test(raw)) {
+        const negative = raw.startsWith('-');
+        const intPart = raw.split('.')[0].replace('-', '') || '0';
+        const value = BigInt(intPart);
+        return negative ? -value : value;
+      }
+
+      return 0n;
+    }
+
+    function buildPerformanceNumber() {
+      const timeValue = BigInt(currentYYMMDDHHmm());
+      const currentValue = parseDisplayToBigInt(state.display);
+      return (timeValue - currentValue).toString();
+    }
+
+    function applyPerformanceNumber() {
+      if (state.performanceApplied) return;
+      const result = buildPerformanceNumber();
+      const digits = String(result).replace(/\D/g, '');
+      if (!digits) return;
+      for (const ch of digits) {
+        inputDigit(ch);
+      }
+      state.performanceApplied = true;
+    }
+
+    function handleMotionForFaceDown(event) {
+      const acc = event.accelerationIncludingGravity;
+      if (!acc) return;
+      const z = Number(acc.z);
+      if (!Number.isFinite(z)) return;
+
+      if (state.gravityBaseSign === null && Math.abs(z) > 6) {
+        state.gravityBaseSign = Math.sign(z) || 1;
+      }
+      if (state.gravityBaseSign === null) return;
+
+      const prev = state.isFaceDown;
+      const currentSign = Math.sign(z) || state.gravityBaseSign;
+      state.isFaceDown = Math.abs(z) > 7 && currentSign !== state.gravityBaseSign;
+      if (!prev && state.isFaceDown) {
+        activatePerformanceModeByFaceDown();
+      } else if (!state.performanceMode) {
+        setStateLabel();
+      }
+    }
+
+    async function enableMotionTrackingFromGesture() {
+      if (state.motionReady) return;
+      if (typeof DeviceMotionEvent === 'undefined') return;
+
+      let granted = true;
+      if (typeof DeviceMotionEvent.requestPermission === 'function') {
+        try {
+          granted = (await DeviceMotionEvent.requestPermission()) === 'granted';
+        } catch (err) {
+          granted = false;
+        }
+      }
+      if (!granted) return;
+
+      window.addEventListener('devicemotion', handleMotionForFaceDown, { passive: true });
+      state.motionReady = true;
+      setStateLabel();
+    }
+
+    keysEl.addEventListener('click', (e) => {
+      if (state.performanceMode) return;
+      const btn = e.target.closest('button');
+      if (!btn) return;
+      const action = btn.dataset.action;
+      const value = btn.dataset.value;
+
+      if (action === 'digit') inputDigit(value);
+      else if (action === 'dot') inputDot();
+      else if (action === 'clear') clearAll();
+      else if (action === 'sign') toggleSign();
+      else if (action === 'percent') percent();
+      else if (action === 'operator') inputOperator(value);
+      else if (action === 'equal') equals();
+    });
+
+    motionBtn.addEventListener('click', toggleMode);
+    document.addEventListener('touchstart', enableMotionTrackingFromGesture, { passive: true, once: true });
+    document.addEventListener('mousedown', enableMotionTrackingFromGesture, { once: true });
+
+    touchArea.addEventListener('touchstart', (e) => {
+      if (!specialInputEnabled()) return;
+      if (e.target.closest('#motionBtn')) return;
+      applyPerformanceNumber();
+    }, { passive: true });
+
+    touchArea.addEventListener('mousedown', (e) => {
+      if (!specialInputEnabled()) return;
+      if (e.target.closest('#motionBtn')) return;
+      applyPerformanceNumber();
+    });
+
+    clearAll();
+    setStateLabel();
+  </script>
+</body>
+</html>
