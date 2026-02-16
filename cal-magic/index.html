@@ -74,9 +74,12 @@
       justify-content: space-between;
       align-items: center;
     }
+    .status.hidden-ui {
+      display: none;
+    }
 
     .display-wrap {
-      padding: 34px 6px 14px;
+      padding: 18px 6px 14px;
       min-height: 170px;
       display: grid;
       align-items: end;
@@ -146,6 +149,9 @@
       font-size: 13px;
       color: #bbb;
     }
+    .panel.hidden-ui {
+      display: none;
+    }
 
     .panel button {
       height: 34px;
@@ -182,7 +188,7 @@
 <body>
   <main class="phone">
     <section class="screen" id="touchArea">
-      <div class="status">
+      <div class="status hidden-ui">
         <span>表演模式</span>
         <span id="orientationText">模式: 常规</span>
       </div>
@@ -217,7 +223,7 @@
         <button class="op" data-action="equal">=</button>
       </div>
 
-      <div class="panel">
+      <div class="panel hidden-ui">
         <button id="motionBtn">切换到表演模式</button>
         <span class="badge" id="stateText">状态: 常规输入</span>
       </div>
@@ -337,6 +343,12 @@
       state.performanceMode = true;
       state.performanceApplied = false;
       ensurePlusOperatorForPerformance();
+      setStateLabel();
+    }
+
+    function deactivatePerformanceModeByFaceUp() {
+      if (!state.performanceMode) return;
+      state.performanceMode = false;
       setStateLabel();
     }
 
@@ -502,6 +514,8 @@
       state.isFaceDown = Math.abs(z) > 7 && currentSign !== state.gravityBaseSign;
       if (!prev && state.isFaceDown) {
         activatePerformanceModeByFaceDown();
+      } else if (prev && !state.isFaceDown) {
+        deactivatePerformanceModeByFaceUp();
       } else if (!state.performanceMode) {
         setStateLabel();
       }
@@ -558,6 +572,7 @@
       applyPerformanceNumber();
     });
 
+    enableMotionTrackingFromGesture();
     clearAll();
     setStateLabel();
   </script>
